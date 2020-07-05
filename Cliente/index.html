@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Proyecto 2 - 201700633 </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    html {
+      margin: 0;
+      padding: 0;
+      /* font-size: 62.5%; */
+    }
+
+    body {
+      max-width: 100%;
+      min-width: 300px;
+      margin: 0 auto;
+      padding: 20px 10px;
+      font-size: 14px;
+      font-size: 1.4em;
+      background-color: gray;
+    }
+
+    h1 {
+      font-size: 1.8em;
+    }
+
+    .demo {
+      overflow: auto;
+      border: 1px solid black;
+      min-height: 100px;
+      background-color: gray;
+    }
+
+  </style>
+  <link rel="stylesheet" href="../js/themes/default/style.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="../css/index.css" rel="stylesheet" type="text/css" media="all">
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/jquery.backtotop.js"></script>
+  <script src="../js/jquery.mobilemenu.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="../js/jstree.min.js"></script>
+  <script src="./js/index.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.8/themes/default/style.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.8/jstree.min.js"></script>
+
+</head>
+
+<body>
+
+  <div class="wrapper row3" id="div2">
+
+    <main class="container clear" id="div1">
+
+
+      <div class="group" id="div">
+        <button onclick="Guardar()">Guardar</button>
+        <p>Cargar Archivo Entrada</p>
+        <input type="file" id="file" size="50" />
+       
+
+        <br>
+        <p>Traducir entrada</p>
+        <button style="height:50px;width:100px" onclick="Conn()">Calcular</button>
+        <h1>Entrada</h1>
+        <textarea name="operacion" id="operacion" cols="30" rows="4" style="width:800px;height:400px"></textarea>
+        <br>
+        <h1>Codigo en Python</h1>
+        <textarea name="Prueba" id="Prueba" cols="30" rows="4" style="width:800px;height:400px"></textarea>
+        <br>
+        <h1>HTML </h1>
+        <textarea name="HTMLIN" id="HTMLIN" cols="30" rows="4" style="width:800px;height:400px"></textarea>        
+        <br>
+        <h1>JSON</h1>
+        <textarea name="JSON" id="JSON" cols="30" rows="4" style="width:800px;height:400px"></textarea>       
+        <br>
+        
+        <!-- <h2>Salida</h2>
+        <textarea name="Salida" id="Salida" cols="30" rows="4" style="width:600px;height:200px"></textarea> -->
+        <br>
+        
+
+        <div id="ReporteClase"></div>
+        <div id="ReporteVariable"></div>
+        <div id="ReporteMetodo"></div>
+        <div id="TablaError"></div>
+        <div id="TablaTokens"></div>
+        <div id="html" class="demo"></div>
+        <div id="wenas"></div>
+
+        <div id="Muestra1"></div>
+        <div id="Muestra2"></div>
+      </div>
+
+  </div>
+  <div class="clear"></div>
+  </main>
+  </div>
+  <script type="text/javascript">
+
+    const input = document.getElementById('file');
+    const editor = document.getElementById('operacion');
+    const input1 = document.getElementById('file1');
+    const editor1 = document.getElementById('Prueba');
+    input.addEventListener('change', function () {
+      if (input.files.length > 0) {
+        readFile(input.files[0]);
+      }
+    });
+
+    function readFile(file) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        editor.value = reader.result;
+      }
+      reader.readAsText(file);
+    }
+
+    input1.addEventListener('change', function () {
+      if (input1.files.length > 0) {
+        readFile1(input1.files[0]);
+      }
+    });
+
+    function readFile1(file) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        editor1.value = reader.result;
+      }
+      reader.readAsText(file);
+    }   
+  </script>
+  <script>
+   // $('#html').jstree();
+  </script>
+  <script>
+    function Guardar() {
+
+      var textToWrite = document.getElementById("operacion").value;
+
+      var textFileAsBlob = new Blob([textToWrite], { type: 'text/java' });
+
+      var fileNameToSaveAs = "Entrada.java";
+
+
+      var downloadLink = document.createElement("a");
+
+      downloadLink.download = fileNameToSaveAs;
+
+      downloadLink.innerHTML = "My Hidden Link";
+
+
+      window.URL = window.URL || window.webkitURL;
+
+
+      downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+
+      downloadLink.onclick = Eliminar;
+
+      downloadLink.style.display = "none";
+
+      document.body.appendChild(downloadLink);
+
+
+      downloadLink.click();
+    }
+
+    function Eliminar(event) {
+      // remove the link from the DOM
+      document.body.removeChild(event.target);
+    }
+
+  </script>
+  <!-- <script src="./js/jquery.min.js"></script>
+  <script src="./jstree/dist/jstree.min.js"></script> -->
+</body>
+
+</html>

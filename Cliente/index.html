@@ -72,6 +72,8 @@
         <h1>Codigo en Python</h1>
         <textarea name="Prueba" id="Prueba" cols="30" rows="4" style="width:800px;height:400px"></textarea>
         <br>
+        <button onclick="des2()">descargar</button>
+        <a id="descargar2">descarga</a>
         <h1>HTML </h1>
         
         <textarea name="HTMLIN" id="HTMLIN" cols="30" rows="4" style="width:800px;height:400px"></textarea>        
@@ -81,6 +83,7 @@
         <h1>JSON</h1>
         <textarea name="JSONi" id="JSONi" cols="30" rows="4" style="width:800px;height:400px"></textarea>       
         <br>
+        
         <h1>REPORTE VARIABLES</h1>
         <textarea name="VARI" id="VARI" cols="30" rows="4" style="width:800px;height:400px"></textarea>       
         <br>
@@ -147,6 +150,12 @@
       var contenidoDeArchivo = document.getElementById("HTMLIN").value;
       var elem = document.getElementById('descargar');
           elem.download = "archivo.html";
+          elem.href = "data:application/octet-stream," + encodeURIComponent(contenidoDeArchivo);
+}
+function des2(){
+      var contenidoDeArchivo = document.getElementById("Prueba").value;
+      var elem = document.getElementById('descargar2');
+          elem.download = "archivo.py";
           elem.href = "data:application/octet-stream," + encodeURIComponent(contenidoDeArchivo);
 }
     function Guardar() {

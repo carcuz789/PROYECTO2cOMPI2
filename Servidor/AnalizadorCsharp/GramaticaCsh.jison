@@ -16,6 +16,9 @@
 /*------------------------------------------------LEXICO------------------------------------------------*/
 %lex
 
+
+%options case-sensitive
+
 %%
 \s+                                 // alv los espacios en blanco
 "//".*                              // comentario simple línea

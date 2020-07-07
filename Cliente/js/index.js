@@ -3,6 +3,8 @@
 
 var Lista_Original = new Array();
 var Lista_Copia = new Array();
+
+
 class General {
 
     constructor(id, tipo, clase, metodo, parametro, tipo1, CantidadF, CantidadM) {
@@ -56,6 +58,40 @@ function Conn() {
         }
     });
 
+var url = 'http://localhost:8080/Reportevariab/';
+
+$.post(url, { text: texto }, function (data, status) {
+    if (status.toString() == "success") {
+        var ast = data.toString();
+       //HTMLIN
+
+       document.getElementById("VARI").value = ast;           
+      
+
+
+    } else {
+        alert("Error estado de conexion:" + status);
+    }
+});
+    var url = 'http://localhost:8080/Calcular3/';
+
+    $.post(url, { text: texto }, function (data, status) {
+        if (status.toString() == "success") {
+            var ast = data.toString();
+           //HTMLIN
+           
+
+           document.getElementById("HTMLIN").value = ast;           
+          
+
+
+        } else {
+            alert("Error estado de conexion:" + status);
+        }
+    });
+
+  
+
 
     var url4 = 'http://localhost:8080/Error/';
 
@@ -100,7 +136,22 @@ function Conn() {
         }
     });
 
-   
+    var url = 'http://localhost:8080/CalcularJson/';
+
+    $.post(url, { text: texto }, function (data, status) {
+        if (status.toString() == "success") {
+            var ast = data.toString();
+           //HTMLIN
+
+           document.getElementById("JSONi").value = ast;           
+          
+
+
+        } else {
+            alert("Error estado de conexion:" + status);
+        }
+    });
+
 
 }
 

@@ -73,12 +73,17 @@
         <textarea name="Prueba" id="Prueba" cols="30" rows="4" style="width:800px;height:400px"></textarea>
         <br>
         <h1>HTML </h1>
+        
         <textarea name="HTMLIN" id="HTMLIN" cols="30" rows="4" style="width:800px;height:400px"></textarea>        
         <br>
+        <button onclick="des()">descargar</button>
+        <a id="descargar">descarga</a>
         <h1>JSON</h1>
-        <textarea name="JSON" id="JSON" cols="30" rows="4" style="width:800px;height:400px"></textarea>       
+        <textarea name="JSONi" id="JSONi" cols="30" rows="4" style="width:800px;height:400px"></textarea>       
         <br>
-        
+        <h1>REPORTE VARIABLES</h1>
+        <textarea name="VARI" id="VARI" cols="30" rows="4" style="width:800px;height:400px"></textarea>       
+        <br>
         <!-- <h2>Salida</h2>
         <textarea name="Salida" id="Salida" cols="30" rows="4" style="width:600px;height:200px"></textarea> -->
         <br>
@@ -138,6 +143,12 @@
    // $('#html').jstree();
   </script>
   <script>
+    function des(){
+      var contenidoDeArchivo = document.getElementById("HTMLIN").value;
+      var elem = document.getElementById('descargar');
+          elem.download = "archivo.html";
+          elem.href = "data:application/octet-stream," + encodeURIComponent(contenidoDeArchivo);
+}
     function Guardar() {
 
       var textToWrite = document.getElementById("operacion").value;

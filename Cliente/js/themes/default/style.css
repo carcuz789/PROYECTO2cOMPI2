@@ -152,7 +152,7 @@
 .vakata-context li > a:hover {
   position: relative;
   background-color: #e8eff7;
-  box-shadow: 0 0 2px #0a6aa1;
+  box-shadow: 0 0 2px #4a575f;
 }
 .vakata-context li > a.vakata-context-parent {
   background-image: url("data:image/gif;base64,R0lGODlhCwAHAIAAACgoKP///yH5BAEAAAEALAAAAAALAAcAAAIORI4JlrqN1oMSnmmZDQUAOw==");

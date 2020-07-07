@@ -1,24 +1,24 @@
 #div {
     padding: 20px 90px;
-    background-color: steelblue;
+    background-color: gray;
     color: black;
   }
 
   #div1 {
-    background-color: steelblue;
+    background-color: gray;
   }
 
   #div2 {
-    background-color: steelblue;
+    background-color: gray;
     color: black;
   }
 
   textarea {
-    background-color: beige;
+    background-color: white;
   }
 
   table{
-    background-color: beige;
+    background-color: white;
   }
 
   

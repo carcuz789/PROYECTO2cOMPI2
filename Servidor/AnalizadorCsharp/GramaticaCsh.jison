@@ -79,7 +79,7 @@
 [A-Za-z|"_"]+[A-Za-z|0-9|"_"]*"-""-"     return 'DECREMENTO';
 [\']([^])[\'] return 'CARACTER';
 [\"]([^\"\n]|(\\|\"))*[\"]             return 'CADENA';
-[\']([^\"\n]|(\\|\'))*[\']             return 'CADENAHTML';
+[\']([^\'\n]|(\\|\'))*[\']             return 'CADENAHTML';
 [A-Za-z|"_"]+[A-Za-z|0-9|"_"]*  return 'Identificador';
 .           CErrores.Errores.add(new CNodoError.NodoError("Lexico","No se esperaba el caracter: "+yytext,yylineno))
 <<EOF>>               return 'EOF';
@@ -145,11 +145,10 @@ Avar: Identificador '(' ')' ';'{$$=$1+" "+ $2+" "+ $3;}
 Func: Tipo Identificador '(' Lista_Parametro ')' '{' Sent123 {$$=$1+" "+ $2+" "+ $3+" "+ $4 +" "+$5+" "+ $7;}
 |Tipo Identificador '(' ')' '{' Sent123 {$$=$1+" "+ $2+" "+ $3+" "+ $4 +" "+ $6;};
 
-Sent123: Sent1 return e ';' '}'{$$=$1+"<ul><li>Return<ul><li>"+$2+$3+"</li></ul></li></ul>";}
-|Sent2 return e ';' '}'{$$=$1+"<ul><li>Return<ul><li>"+$2+$3+"</li></ul></li></ul>";}
+Sent123: Sent1111 return e ';' '}'{$$=$1+"<ul><li>Return<ul><li>"+$2+$3+"</li></ul></li></ul>";}
 |return e ';' '}'{$$="<ul><li>Return<ul><li>"+$1+$2+"</li></ul></li></ul>";}
-| Sent1 '}'{$$=$1;}
-| Sent2 '}'{$$=$1;}
+| Sent1111 '}'{$$=$1;}
+
 |'}'{};
 
 Lista_Parametro: Var2 {$$=$1;};
@@ -161,11 +160,9 @@ Metodo: void Identificador '(' Lista_Parametro ')' '{' Sent113 {$$="<ul><li>Iden
 |void main '(' ')' '{' Sent113  {$$="<ul><li>Main "+$2+"<ul><li>Cuerpo Main "+$6+"</li></ul></li></ul>";}
 |void Identificador '(' ')' '{' Sent113 {$$="<ul><li>Identificador Metodo "+$2+"<ul><li>Cuerpo Metodo "+$6+"</li></ul></li></ul>";};
 
-Sent113: Sent1 return ';' '}'{$$=$1+"<ul><li>Return"+$2+"</li></ul>";}
-|Sent2 return ';' '}'{$$=$1+"<ul><li>Return"+$2+"</li></ul>";}
+Sent113: Sent1111 return ';' '}'{$$=$1+"<ul><li>Return"+$2+"</li></ul>";}
 | return ';' '}'{$$="<ul><li>Return<ul><li> "+$1+"</li></ul></li></ul>";}
-|Sent1'}' {$$=$1;}
-|Sent2 '}' {$$=$1;}
+|Sent1111'}' {$$=$1;}
 |'}'{};
 
 LFunc: Identificador '(' Lista_E ')'{$$=$1+" "+ $3;};
@@ -183,10 +180,10 @@ IF: if '(' e ')' '{' Sent11  {$$="<ul><li>Condicion If"+$3+"</li></ul><ul><li>Cu
 ELS: ELS else if '(' e ')' '{' Sent11  {$$=$1+"<ul><li>Declaracion Else If<ul><li>Condicion Else If"+$5+"</li></ul><ul><li>Cuerpo Else If"+$8+"</li></ul></li></ul>";}
 |else if '(' e ')' '{' Sent11 {$$="<ul><li>Declaracion Else If<ul><li>Condicion Else If"+$4+"</li></ul><ul><li>Cuerpo Else If"+$7+"</li></ul></li></ul>";};
 
-Sent11: Sent1 '}' {$$=$1;}  
-|Sent2 '}' {$$=$1;}  
-|Sent1 Senten ';' '}' {$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
-|Sent2 Senten ';' '}' {$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
+Sent11: Sent1111 '}' {$$=$1;}  
+ 
+|Sent1111 Senten ';' '}' {$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
+
 |Senten';' '}' {$$="<ul><li>Sentencia<ul><li> "+$1+"</li></ul></li></ul>";}
 |'}'{};
 
@@ -254,32 +251,24 @@ e: e '&&' e
 
 Swit: switch '(' e ')' '{' Cas Def '}' {$$="<ul><li>Condicion Switch "+$3+"</li></ul><ul><li>Cuerpo Switch "+$6+$7+"</li></ul>";};
 
-Cas: Cas case e ':' Sent1 {$$=$1+"<ul><li>Condicion Case "+$3+"</li></ul><ul><li>Cuerpo Case "+$5+"</li></ul>";}
-|Cas case e ':' Sent2 {$$=$1+"<ul><li>Condicion Case "+$3+"</li></ul><ul><li>Cuerpo Case "+$5+"</li></ul>";}
+Cas: Cas case e ':' Sent1111 {$$=$1+"<ul><li>Condicion Case "+$3+"</li></ul><ul><li>Cuerpo Case "+$5+"</li></ul>";}
 |Cas case e ':' {$$=$1+"<ul><li>Condicion Case "+$3+"</li></ul>";}
-|Cas case e ':' Sent1 break ';'{$$=$1+"<ul><li>Condicion Case "+$3+"</li></ul><ul><li>Cuerpo Case "+$5+"</li></ul><ul><li>Break "+$6+"</li></ul>";}
-|Cas case e ':' Sent2 break ';'{$$=$1+"<ul><li>Condicion Case "+$3+"</li></ul><ul><li>Cuerpo Case "+$5+"</li></ul><ul><li>Break "+$6+"</li></ul>";}
+|Cas case e ':' Sent1111 break ';'{$$=$1+"<ul><li>Condicion Case "+$3+"</li></ul><ul><li>Cuerpo Case "+$5+"</li></ul><ul><li>Break "+$6+"</li></ul>";}
 |Cas case e ':' break ';'{$$=$1+"<ul><li>Condicion Case "+$3+"</li></ul><ul><li>Break "+$5+"</li></ul>";}
 |case e ':' {$$="<ul><li>Condicion Case "+$2+"</li></ul>";}
-|case e ':' Sent1 {$$="<ul><li>Condicion Case "+$2+"</li></ul><ul><li>Cuerpo Case "+$4+"</li></ul>";}
-|case e ':' Sent2 {$$="<ul><li>Condicion Case "+$2+"</li></ul><ul><li>Cuerpo Case "+$4+"</li></ul>";}
+|case e ':' Sent1111 {$$="<ul><li>Condicion Case "+$2+"</li></ul><ul><li>Cuerpo Case "+$4+"</li></ul>";}
 |case e ':' break ';'{$$=$1+"<ul><li>Condicion Case "+$2+"</li></ul><ul><li>Break "+$4+"</li></ul>";}
-|case e ':' Sent1 break ';'{$$="<ul><li>Condicion Case "+$2+"</li></ul><ul><li>Cuerpo Case "+$4+"</li></ul><ul><li>Break "+$5+"</li></ul>";}
-|case e ':' Sent2 break ';'{$$="<ul><li>Condicion Case "+$2+"</li></ul><ul><li>Cuerpo Case "+$4+"</li></ul><ul><li>Break "+$5+"</li></ul>";};
+|case e ':' Sent1111 break ';'{$$="<ul><li>Condicion Case "+$2+"</li></ul><ul><li>Cuerpo Case "+$4+"</li></ul><ul><li>Break "+$5+"</li></ul>";};
 
-
-
-Def: default ':' Sent1 break ';'{$$=$1+" "+ $3+" "+ $4;}
+Def: default ':' Sent1111 break ';'{$$=$1+" "+ $3+" "+ $4;}
 |default ':' break ';'{$$=$1+" "+ $3;}
-|default ':' Sent1 {$$=$1+" "+ $3;}
+|default ':' Sent1111 {$$=$1+" "+ $3;}
 |default ':' {$$=$1;};
 
 Whil: while '(' e ')' '{' Sent111 {$$="<ul><li>Condicion While "+$3+"</li></ul><ul><li>Cuerpo While "+$6+"</li></ul>";};
 
-Sent111: Sent1 Senten ';' '}'{$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
-|Sent2 Senten ';' '}'{$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
-|Sent1 '}'{$$=$1}
-|Sent2 '}'{$$=$1}
+Sent111: Sent1111 Senten ';' '}'{$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
+|Sent1111 '}'{$$=$1}
 |Senten ';' '}'{$$="<ul><li>Sentencia<ul><li> "+$1+"</li></ul></li></ul>";}
 |'}'{};
 
@@ -287,11 +276,9 @@ Do: do '{' Sent11  while '(' e ')' ';'{$$="<ul><li>Cuerpo Do "+ $3+" </li></ul><
 
 Fo: for '(' Fo1 ';' e ';'  Aum ')' '{' Sent112  {$$= "<ul><li>Asignacion "+ $3+"<ul><li>Condicion "+$5+"<ul><li>Aumento o Decremento "+$7+"</li></ul></li></ul></li></ul>"+"<ul><li>Cuerpo For"+$10+"</li></ul>";};
 
-Sent112: Sent1 Senten ';' '}' {$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
-|Sent2 Senten ';' '}' {$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
+Sent112: Sent1111 Senten ';' '}' {$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
 |Senten ';' '}'{$$="<ul><li>Sentencia<ul><li> "+$1+"</li></ul></li></ul>";}
-|Sent1 '}'{$$=$1;}
-|Sent2 '}'{$$=$1;}
+|Sent1111 '}'{$$=$1;}
 |'}'{}
 ;
 
@@ -315,6 +302,39 @@ Sent2: Imprimir{$$ = "<ul><li>Imprimir<ul><li>"+$1+"</li></ul></li></ul></li></u
 |Metodo{$$ = "<ul><li>Declaracion Metodo<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |Var{$$ = "<ul><li>Declaracion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |Avar{$$ = "<ul><li>Asignacion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+
+;
+
+Sent1111: IF{$$="<ul><li>Declaracion If <ul><li>"+$1+"</li></ul></li></ul>";}
+|Swit{$$="<ul><li>Declaracion Switch<ul><li>"+$1+"</li></ul></li></ul>";}
+|Whil{$$="<ul><li>Declaracion While<ul><li>"+$1+"</li></ul></li></ul>";}
+|Do{$$="<ul><li>Declaracion Do<ul><li>"+$1+"</li></ul></li></ul>";}
+|LFunc{$$="<ul><li>Asignacion Funcion<ul><li>"+$1+"</li></ul></li></ul>";}
+|Fo{$$ = "<ul><li>Declaracion For<ul><li>"+$1+"</li></ul></li></ul>";}
+|Sent1111 IF{$$=$1+"<ul><li>Declaracion If <ul><li>"+$2+"</li></ul></li></ul>";}
+|Sent1111 Swit{$$=$1+"<ul><li>Declaracion Switch<ul><li>"+$2+"</li></ul></li></ul>";}
+|Sent1111 Whil{$$=$1+"<ul><li>Declaracion While<ul><li>"+$2+"</li></ul></li></ul>";}
+|Sent1111 Do{$$=$1+"<ul><li>Declaracion Do<ul><li>"+$2+"</li></ul></li></ul>";}
+|Sent1111 LFunc{$$=$1+"<ul><li>Asignacion Funcion<ul><li>"+$2+"</li></ul></li></ul>";}
+| Sent1111 Fo{$$ = $1+"<ul><li>Declaracion For<ul><li>"+$2+"</li></ul></li></ul>";}
+|Sent1111 Imprimir{$$ = $1+"<ul><li>Imprimir<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
+|Sent1111 Avar{$$ =$1+ "<ul><li>Asignacion Variable<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
+|Sent1111 Var{$$ = $1+"<ul><li>Declaracion Variable<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
+| Imprimir{$$ = "<ul><li>Imprimir<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|Avar{$$ = "<ul><li>Asignacion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|Var{$$ = "<ul><li>Declaracion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+;
+
+Sent2222: Imprimir{$$ = "<ul><li>Imprimir<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|Func{$$ = "<ul><li>Declaracion Funcion<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|Metodo{$$ = "<ul><li>Declaracion Metodo<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|Var{$$ = "<ul><li>Declaracion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|Avar{$$ = "<ul><li>Asignacion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+| Sent22 Imprimir{$$ =$1+ "<ul><li>Imprimir<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|Sent2222 Func{$$ = $1+"<ul><li>Declaracion Funcion<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|Sent2222 Metodo{$$ = $1+"<ul><li>Declaracion Metodo<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|Sent2222 Var{$$ =$1+ "<ul><li>Declaracion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|Sent2222 Avar{$$ =$1+ "<ul><li>Asignacion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 
 ;
 

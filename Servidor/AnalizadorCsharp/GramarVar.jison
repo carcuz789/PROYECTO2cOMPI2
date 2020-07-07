@@ -120,16 +120,16 @@ Sent12: Sent2 '}'{$$=$1;}
 
 
 
-Var: Tipo Lista_Id Var1{$$=" ";};
+Var: Tipo Lista_Id Var1{$$="TIPO -> "+$1+" Variables -> "+ $2+" \n ";};
 
-Tipo: int{$$="";}
-|double{$$="";}
-|bool{$$="";}
-|char{$$="";}
-|string{$$="";};
+Tipo: int{$$=$1;}
+|double{$$=$1;}
+|bool{$$=$1;}
+|char{$$=$1;}
+|string{$$=$1;};
 
-Lista_Id: Lista_Id ',' Identificador{$$="";}
-|Identificador{$$="";};
+Lista_Id: Lista_Id ',' Identificador{$$=$1+","+$3;}
+|Identificador{$$=$1;};
 
 
 
@@ -139,7 +139,7 @@ Var1:'=' e ';'{$$= "";}
 Avar: Identificador '(' ')' ';'{$$=" ";}
 |Identificador '=' e ';'{$$=" ";};
 
-Func: Tipo Identificador '(' Lista_Parametro ')' '{' Sent123 {$$=$7;}
+Func: Tipo Identificador '(' Lista_Parametro ')' '{' Sent123 {$$=$4;}
 |Tipo Identificador '(' ')' '{' Sent123 {$$=$6;};
 
 Sent123: Sent1111 return e ';' '}'{$$=$1;}
@@ -147,10 +147,10 @@ Sent123: Sent1111 return e ';' '}'{$$=$1;}
 | Sent1111 '}'{$$=$1;}
 |'}'{$$=" ";};
 
-Lista_Parametro: Var2 {$$=" ";};
+Lista_Parametro: Var2 {$$=$1;};
 
-Var2: Var2 ',' Tipo Identificador{$$=" ";}
-|Tipo Identificador{$$=" ";}; 
+Var2: Var2 ',' Tipo Identificador{$$=$1+"Tipo -> "+$3+" Identificador -> "+$4+"\n";}
+|Tipo Identificador{$$="Tipo -> "+$1+" Identificador -> "+$2 ;}; 
 
 Metodo: void Identificador '(' Lista_Parametro ')' '{' Sent113 {$$=$7;}
 |void main '(' ')' '{' Sent113  {$$=$6;}
@@ -165,7 +165,7 @@ LFunc: Identificador '(' Lista_E ')'{$$=" ";};
 Lista_E: Lista_E ',' e{$$=" ";}
 |e{$$=" ";};
 
-Imprimir: Console '.' Write  '('  e   ')' ';' {$$=$5+" \n";}; 
+Imprimir: Console '.' Write  '('  e   ')' ';' {$$="";}; 
 
 
 IF: if '(' e ')' '{' Sent11  {$$=$6;}
@@ -390,7 +390,7 @@ Sent112: Sent1111 Senten ';' '}' {$$=$1+" "+$2;}
 |'}'{$$="\n";}
 ;
 
-Fo1: Tipo Identificador '=' e2{$$=" ";}
+Fo1: Tipo Identificador '=' e2{$$=" Tipo ->"+$1 +" Identificador -> "+$2;}
 | Identificador '=' e2{$$=" ";};
 
 Aum:AUMETO{$$=" ";}

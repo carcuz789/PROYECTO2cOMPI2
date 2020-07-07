@@ -2,7 +2,10 @@
 
 echo "Procesando gramática..."
 
-jison GramaticaHTML.jison
+jison GramarVar.jison
 
 echo "Gramática procesada..."
 
+
+
+	

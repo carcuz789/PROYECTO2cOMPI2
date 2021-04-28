@@ -5,13 +5,10 @@ var Lista_comparar;
 var express = require("express");
 var cors = require("cors");
 var bodyParser = require("body-parser");
-var gramatica = require("./AnalizadorCsharp/GramaticaCsh");
-var gramaticatrauc = require("./AnalizadorCsharp/GramaticaCshTrad");
-var gramaticaHTML = require("./AnalizadorCsharp/GramaticaHTML");
-var ReporteVar = require("./AnalizadorCsharp/GramarVar");
-var Errores_1 = require("./CshAST/Errores");
-var TOKENS = require("./CshAST/TOKENS");
-var html2json = require('html2json').html2json;
+var gramatica = require("./Analizador/GramaticaJava");
+var gramatica1 = require("./Analizador/GramaticaTokens");
+var gramatica2 = require("./Analizador/GramaticaTokensCopia");
+var Errores_1 = require("./JavaAST/Errores");
 var app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -19,57 +16,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/Calcular/', function (req, res) {
     var entrada = req.body.text;
     var resultado = parser(entrada);
-   
+
 
     var err = Errores_1.Errores.geterror();
     console.log(err);
-   
+    
+    //document.getElementById("tabla").innerHTML = err;
     res.send(resultado.toString());
     Errores_1.Errores.clear();
-});
-app.post('/Calcular2/', function (req, res) {
-    var entrada = req.body.text;
-    
-    var resultado = traducir(entrada);
-
-    
-    
-    res.send(resultado.toString());
-    
-});
-app.post('/Calcular3/', function (req, res) {
-    var entrad = req.body.text;
-    
-    var resultadoo = RETORNARHTML(entrad);
-    console.log("resultado del html");
-    console.log(resultadoo.toString());
-    var ressin = resultadoo.replace(/'/g, " ");
-    res.send(ressin.toString());
-    
-});
-app.post('/CalcularJson/', function (req, res) {
-    var entrad = req.body.text;
-    
-    var resultadoo = RETORNARHTML(entrad);
-    var resitr = resultadoo.trim();
-    //hacer el .trim
-    
-    var ressin = resitr.replace(/'/g, " ");
-    var json = html2json(ressin);
-    
-    console.log(json.toString());
-     var jsondo =    JSON.stringify(json,null,"\t");
-    res.send(jsondo.toString());
-    
-});
-app.post('/Reportevariab/', function (req, res) {
-    var entrad = req.body.text;
-    
-    var resultadoo = REPVAR(entrad);
-    //hacer el .trim
-    
-    res.send(resultadoo.toString());
-    
 });
 app.post('/Error/', function (req, res) {
     var entrada = req.body.text;
@@ -143,37 +97,23 @@ function parser(texto) {
     }
 }
 
-function traducir(texto) {
+function parser1(texto) {
     try {
 
-        return gramaticatrauc.parse(texto);
+        return gramatica1.parse(texto);
     }
     catch (e) {
-        return "Error en compilacion de Entrada1: " + e.toString();
+        return "Error en compilacion de Entrada2: " + e.toString();
         // return texto+"Error1";
     }
 }
-
-function RETORNARHTML(texto) {
+function parser2(texto) {
     try {
 
-        return gramaticaHTML.parse(texto);
+        return gramatica2.parse(texto);
     }
     catch (e) {
-        return "Error en compilacion de Entrada1: " + e.toString();
+        return "Error en compilacion de Entrada3: " + e.toString();
         // return texto+"Error1";
     }
 }
-function REPVAR(texto) {
-    try {
-
-        return ReporteVar.parse(texto);
-    }
-    catch (e) {
-        return "Error en compilacion de Entrada1: " + e.toString();
-        // return texto+"Error1";
-    }
-}
-
-
-

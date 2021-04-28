@@ -1,8 +1,8 @@
 import * as express from "express";
 import * as cors from "cors";
 import * as bodyParser from "body-parser";
-import * as gramatica from "./AnalizadorCsharp/GramaticaCsh";
-import { Errores } from "./CSHAST/Errores";
+import * as gramatica from "./AnalizadorJava/GramaticaJava";
+import { Errores } from "./JavaAST/Errores";
 
 var app=express();
 app.use(bodyParser.json());

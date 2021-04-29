@@ -109,83 +109,104 @@ case 1:
     
 
 break;
-case 2: case 29: case 39: case 47: case 61: case 62: case 130: case 131: case 132: case 133: case 134: case 135: case 136: case 137: case 138:
+case 2:
 this.$=$$[$0-1]+"$"+$$[$0];
 break;
-case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 14: case 15: case 16: case 17: case 18: case 20: case 21: case 22: case 28: case 30: case 31: case 38: case 40: case 43: case 45: case 50: case 101: case 106: case 108: case 114: case 145: case 146: case 147: case 148: case 149: case 150: case 151: case 152: case 153: case 154: case 155: case 156: case 157: case 158: case 159:
+case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 14: case 15: case 16: case 17: case 18: case 20: case 31: case 43: case 45: case 50: case 84: case 96: case 101: case 106: case 108: case 114: case 145: case 146: case 147: case 148: case 149: case 151: case 152: case 153: case 154: case 155: case 156: case 157: case 158: case 159:
 this.$=$$[$0];
 break;
-case 11: case 48:
+case 11:
 this.$=$$[$0-4]+"$"+$$[$0-3]+"$"+$$[$0];
 break;
 case 12:
 this.$=$$[$0-5]+"$"+$$[$0-4]+"$"+$$[$0-2]+"$"+$$[$0];
 break;
-case 13: case 19: case 42: case 59: case 60:
-this.$=$$[$0-2]+"$"+$$[$0-1]+"$"+$$[$0];
+case 13:
+this.$ = " <td>"+"DECLARACION VARIABLE"+"</td><td>"+$$[$0-2]+"</td><td>"+$$[$0-1]+"</td>"+$$[$0];
 break;
-case 25: case 34:
-this.$=$$[$0-6]+"$"+$$[$0-5]+"$"+$$[$0-4]+"$"+$$[$0-3]+"$"+$$[$0-2]+"$"+$$[$0-1]+"$"+$$[$0];
+case 19: case 42:
+this.$=$$[$0-2]+" , "+$$[$0];
 break;
-case 26: case 35: case 36:
-this.$=$$[$0-5]+"$"+$$[$0-4]+"$"+$$[$0-3]+"$"+$$[$0-2]+"$"+$$[$0-1]+"$"+$$[$0];
-break;
-case 27: case 96:
-this.$=$$[$0-4]+"$"+$$[$0];
-break;
-case 32:
-this.$=$$[$0-3]+"$"+ $$[$0-2]+"$"+ $$[$0-1]+"$"+ $$[$0];
-break;
-case 33:
-this.$=$$[$0-1]+"$"+ $$[$0];
-break;
-case 37: case 46:
-this.$=$$[$0-3]+"$"+$$[$0];
-break;
-case 41:
-this.$=$$[$0-4]+"$"+$$[$0-3]+"$"+$$[$0-2]+"$"+$$[$0-1];
-break;
-case 49:
-this.$=$$[$0-7]+"$"+$$[$0];
-break;
-case 51: case 110: case 117: case 139: case 140: case 141: case 142: case 143: case 144:
+case 21: case 39: case 51: case 110: case 117: case 138: case 139: case 141: case 143: case 144:
 this.$=$$[$0-1];
 break;
-case 52: case 97: case 109: case 115:
+case 23:
+this.$ = " <td>"+"LLAMADA METODO"+"</td><td>"+"metodo"+"</td><td>"+$$[$0-3]+"</td>";
+break;
+case 24:
+this.$ = " <td>"+"ASIGNACION VARIABLE"+"</td><td>"+"ASIGNACION"+"</td><td>"+$$[$0-3]+"</td>";
+break;
+case 25:
+this.$ = " <td>"+"DECLARACION FUNCION"+"</td><td>"+$$[$0-6]+"</td><td>"+$$[$0-5]+"</td>";
+break;
+case 26:
+this.$ = " <td>"+"DECLARACION FUNCION"+"</td><td>"+$$[$0-5]+"</td><td>"+$$[$0-4]+"</td>";
+break;
+case 32:
+this.$ = $$[$0-3] +" <td>"+"DECLARACION VARIABLE"+"</td><td>"+$$[$0-1]+"</td><td>"+$$[$0]+"</td>";
+break;
+case 33:
+this.$ = " <td>"+"DECLARACION VARIABLE"+"</td><td>"+$$[$0-1]+"</td><td>"+$$[$0]+"</td>";
+break;
+case 34:
+this.$ = $$[$0-6] +" <td>"+"DECLARACION METODO VOID"+"</td><td>"+$$[$0-6]+"</td><td>"+$$[$0-5]+"</td>"+$$[$0];
+break;
+case 36:
+this.$ = $$[$0-5] +" <td>"+"DECLARACION METODO"+"</td><td>"+$$[$0-5]+"</td><td>"+$$[$0-4]+"</td>"+$$[$0];
+break;
+case 37: case 52: case 109: case 115:
 this.$=$$[$0-3];
 break;
+case 41:
+this.$ = " <td>"+" LAMADA FUNCION"+"</td><td>"+"FUNCION"+"</td><td>"+$$[$0-4]+"</td>"+$$[$0-2];
+break;
+case 46:
+this.$=$$[$0-3]+" "+$$[$0];
+break;
+case 47:
+this.$=$$[$0-1]+$$[$0];
+break;
+case 48:
+this.$=$$[$0-4]+$$[$0-3]+$$[$0];
+break;
+case 49:
+this.$=$$[$0-7]+$$[$0];
+break;
+case 86:
+this.$ = " <td>"+" FUNCION tolower"+"</td><td>"+$$[$0-3]+"</td><td>"+$$[$0-1]+"</td>";
+break;
+case 87:
+this.$ = " <td>"+" FUNCION toupper"+"</td><td>"+$$[$0-3]+"</td><td>"+$$[$0-1]+"</td>";
+break;
+case 88:
+this.$ = " <td>"+" FUNCION lengh"+"</td><td>"+$$[$0-3]+"</td><td>"+$$[$0-1]+"</td>";
+break;
+case 89:
+this.$ = " <td>"+" FUNCION truncate "+"</td><td>"+$$[$0-3]+"</td><td>"+$$[$0-1]+"</td>";
+break;
+case 90:
+this.$ = " <td>"+" FUNCION round"+"</td><td>"+$$[$0-3]+"</td><td>"+$$[$0-1]+"</td>";
+break;
+case 91:
+this.$ = " <td>"+" FUNCION typeof"+"</td><td>"+$$[$0-3]+"</td><td>"+$$[$0-1]+"</td>";
+break;
+case 92:
+this.$ = " <td>"+" FUNCION tostring"+"</td><td>"+$$[$0-3]+"</td><td>"+$$[$0-1]+"</td>";
+break;
+case 93:
+this.$ = " <td>"+" FUNCION tochararray"+"</td><td>"+$$[$0-3]+"</td><td>"+$$[$0-1]+"</td>";
+break;
 case 95:
-this.$=$$[$0-2]+"$"+$$[$0-1];
+this.$=$$[$0-2] +$$[$0-1];
 break;
-case 98:
-this.$=$$[$0-6]+"$"+$$[$0-2];
-break;
-case 99: case 113:
-this.$=$$[$0-5];
-break;
-case 103: case 104:
+case 98: case 103: case 104:
 this.$=$$[$0-2];
 break;
-case 123:
-this.$=$$[$0-10]+"$"+$$[$0-7]+"$"+$$[$0-2];
+case 113:
+this.$=$$[$0-5];
 break;
-case 124:
-this.$=$$[$0-8]+"$"+$$[$0-5]+"$"+$$[$0-2];
-break;
-case 125:
-this.$=$$[$0-6]+"$"+$$[$0-4]+"$"+$$[$0-1];
-break;
-case 126:
-this.$=$$[$0-11]+"$"+$$[$0-9]+"$"+$$[$0-7];
-break;
-case 127:
-this.$=$$[$0-10]+"$"+$$[$0-8]+"$"+$$[$0-6];
-break;
-case 128:
-this.$=$$[$0-7]+"$"+$$[$0-4]+"$"+$$[$0];
-break;
-case 129:
-this.$=$$[$0-6]+"$"+$$[$0-4];
+case 130: case 131: case 132: case 133: case 134: case 136: case 137:
+this.$=$$[$0-1]+" "+$$[$0];
 break;
 }
 },

@@ -172,7 +172,7 @@ ejecuciones : exec Identificador '(' ')' ';' {$$=$1+"$"+$2+"$"+$5;}
 
 
 
-Var: Tipo Lista_Id Var1{$$=$1+"$"+$2+"$"+$3;}{$$ = " <td>"+"DECLARACION VARIABLE"+"</td><td>"+$1+"</td><td>"+$2+"</td>";};
+Var: Tipo Lista_Id Var1{$$ = " <td>"+"DECLARACION VARIABLE"+"</td><td>"+$1+"</td><td>"+$2+"</td>"+$3;};
 
 Tipo: int{$$=$1;}
 |double{$$=$1;}
@@ -180,58 +180,59 @@ Tipo: int{$$=$1;}
 |char{$$=$1;}
 |String{$$=$1;};
 
-Lista_Id: Lista_Id ',' Identificador{}
-|Identificador{};
+Lista_Id: Lista_Id ',' Identificador{$$=$1+" , "+$3;}
+|Identificador{$$=$1;};
 
-Var1:'=' e ';'{}
+Var1:'=' e ';'{$$=$2;}
 |';'{};
 
 Avar: Identificador '(' ')' ';'{$$ = " <td>"+"LLAMADA METODO"+"</td><td>"+"metodo"+"</td><td>"+$1+"</td>";}
 |Identificador '=' e ';'{$$ = " <td>"+"ASIGNACION VARIABLE"+"</td><td>"+"ASIGNACION"+"</td><td>"+$1+"</td>";};
 
-Func: Tipo Identificador '(' Lista_Parametro ')' '{' Sent123 {}
-|Tipo Identificador '(' ')' '{' Sent123 {};
+Func: Tipo Identificador '(' Lista_Parametro ')' '{' Sent123 {$$ = " <td>"+"DECLARACION FUNCION"+"</td><td>"+$1+"</td><td>"+$2+"</td>";}
+|Tipo Identificador '(' ')' '{' Sent123 {$$ = " <td>"+"DECLARACION FUNCION"+"</td><td>"+$1+"</td><td>"+$2+"</td>";}};
 
 Sent123: Sent1 return e ';' '}'{}
 |return e ';' '}'{}
 | Sent1 '}'{}
 |'}'{};
 
-Lista_Parametro: Var2 {};
+Lista_Parametro: Var2 {$$=$1;};
 
-Var2: Var2 ',' Tipo Identificador {}
-|Tipo Identificador {};
+Var2: Var2 ',' Tipo Identificador {$$ = $1 +" <td>"+"DECLARACION VARIABLE"+"</td><td>"+$3+"</td><td>"+$4+"</td>";}
+|Tipo Identificador {$$ = " <td>"+"DECLARACION VARIABLE"+"</td><td>"+$1+"</td><td>"+$2+"</td>";};
 
 
-Metodo: void Identificador '(' Lista_Parametro ')' '{' Sent113 {}
+Metodo: void Identificador '(' Lista_Parametro ')' '{' Sent113 {$$ = $1 +" <td>"+"DECLARACION METODO VOID"+"</td><td>"+$1+"</td><td>"+$2+"</td>"+$7;}
 |void main '(' ')' '{' Sent113  {}
-|void Identificador '(' ')' '{' Sent113 {};
+|void Identificador '(' ')' '{' Sent113 {$$ = $1 +" <td>"+"DECLARACION METODO"+"</td><td>"+$1+"</td><td>"+$2+"</td>"+$6;};
 
-Sent113: Sent1 return ';' '}' {}
+Sent113: Sent1 return ';' '}' {$$=$1;}
 | return ';' '}'{}
-|Sent1 '}'{}
+|Sent1 '}'{$$=$1;}
 |'}'{};
 
-LFunc: Identificador '(' Lista_E ')' ';'{};
+LFunc: Identificador '(' Lista_E ')' ';'{$$ = " <td>"+" LAMADA FUNCION"+"</td><td>"+"FUNCION"+"</td><td>"+$1+"</td>"+$3;};
 
-Lista_E: Lista_E ',' e {}
-|e{};
+
+Lista_E: Lista_E ',' e {$$=$1+" , "+$3;}
+|e{$$=$1;};
 
 
 Imprimir: print '(' e ')' ';'{};
 
 
     
-IF: if '(' e ')' '{' Sent11  {}
-|if '(' e ')' '{' Sent11  else '{' Sent11 {}
-|if '(' e ')' '{' Sent11  ELS {}
-|if '(' e ')' '{' Sent11  ELS else '{' Sent11 {};
+IF: if '(' e ')' '{' Sent11  {$$=$6;}
+|if '(' e ')' '{' Sent11  else '{' Sent11 {$$=$6+" "+$9;}
+|if '(' e ')' '{' Sent11  ELS {$$=$6+$7;}
+|if '(' e ')' '{' Sent11  ELS else '{' Sent11 {$$=$6+$7+$10;};
 
-ELS: ELS else if '(' e ')' '{' Sent11  {}
-|else if '(' e ')' '{' Sent11 {};
+ELS: ELS else if '(' e ')' '{' Sent11  {$$=$1+$8;}
+|else if '(' e ')' '{' Sent11 {$$=$7;};
 
-Sent11: Sent1 '}' {} 
-|Sent1 Senten ';' '}' {}
+Sent11: Sent1 '}' {$$=$1;}
+|Sent1 Senten ';' '}' {$$=$1;}
 |Senten ';' '}' {}
 |'}'{};
 
@@ -293,59 +294,59 @@ Senten: break {}
     |false
         {}
     |LFunc
-        {}
+        {$$=$1;}
     |Tipo
-        {} 
+        {}
     |tolower '(' e ')'
-        {}
+       {$$ = " <td>"+" FUNCION tolower"+"</td><td>"+$1+"</td><td>"+$3+"</td>";}
     |toupper '(' e ')'
-        {}
+        {$$ = " <td>"+" FUNCION toupper"+"</td><td>"+$1+"</td><td>"+$3+"</td>";}
     |lenght '(' e ')'
-        {}
+         {$$ = " <td>"+" FUNCION lengh"+"</td><td>"+$1+"</td><td>"+$3+"</td>";}
     |truncate '(' e ')'
-        {}
+         {$$ = " <td>"+" FUNCION truncate "+"</td><td>"+$1+"</td><td>"+$3+"</td>";}
     |round '(' e ')'
-        {}
+         {$$ = " <td>"+" FUNCION round"+"</td><td>"+$1+"</td><td>"+$3+"</td>";}
     |typeof '(' e ')'
-        {}
+       {$$ = " <td>"+" FUNCION typeof"+"</td><td>"+$1+"</td><td>"+$3+"</td>";}
     |tostring '(' e ')'
-        {}
+       {$$ = " <td>"+" FUNCION tostring"+"</td><td>"+$1+"</td><td>"+$3+"</td>";}
     |tochararray '(' e ')'
-        {}
+        {$$ = " <td>"+" FUNCION tochararray"+"</td><td>"+$1+"</td><td>"+$3+"</td>";}
     |Identificador
         {};
 
-Swit: switch '(' e ')' '{' Cas Def '}' {};
+Swit: switch '(' e ')' '{' Cas Def '}' {$$=$6 +$7;};
 
-Cas: Cas case e ':' Sent1 {}
+Cas: Cas case e ':' Sent1 {$$=$5;}
 |Cas case e ':' {}
-|Cas case e ':' Sent1 break ';'{}
+|Cas case e ':' Sent1 break ';'{$$=$5;}
 |Cas case e ':' break ';'{}
 |case e ':' {}
-|case e ':' Sent1 {}
+|case e ':' Sent1 {$$=$4;}
 |case e ':' break ';'{}
-|case e ':' Sent1 break ';'{};
+|case e ':' Sent1 break ';'{$$=$4;};
 
 
-Def: default ':' Sent1 break ';'{}
+Def: default ':' Sent1 break ';'{$$=$3;}
 |default ':' break ';'{}
-|default ':' Sent1 {}
+|default ':' Sent1 {$$=$3;}
 |default ':' {};
 
-Whil: while '(' e ')' '{' Sent111 {};
+Whil: while '(' e ')' '{' Sent111 {$$=$6;};
 
-Sent111: Sent1 Senten ';' '}'{}
-|Sent1 '}'{}
+Sent111: Sent1 Senten ';' '}'{$$=$1;}
+|Sent1 '}'{$$=$1;}
 |Senten ';' '}'{}
 |'}'{};
 
-Do: do '{' Sent11  while '(' e ')' ';'{};
+Do: do '{' Sent11  while '(' e ')' ';'{$$=$3;};
 
-Fo: for '(' Fo1 ';' e ';'  Aum ')' '{' Sent112  {};
+Fo: for '(' Fo1 ';' e ';'  Aum ')' '{' Sent112  {$$=$10;};
 
-Sent112: Sent1 Senten ';' '}'{}
+Sent112: Sent1 Senten ';' '}'{$$=$1;}
 |Senten ';' '}'{}
-|Sent1 '}'{}
+|Sent1 '}'{$$=$1;}
 |'}'{};
 
 Fo1: Tipo Identificador '=' e{}
@@ -356,48 +357,48 @@ Aum:AUMETO{}
 
 
         
-    DecVec: Tipo '[' ']' Identificador '=' new Tipo '[' e ']' ';' {}
-     | Tipo '[' ']' Identificador '=' '{' Lista_E '}' ';' {};
+    DecVec: Tipo '[' ']' Identificador '=' new Tipo '[' e ']' ';'  {$$ = " <td>"+" DECLARACION VECTOR"+"</td><td>"+$1+"</td><td>"+$4+"</td>";}
+     | Tipo '[' ']' Identificador '=' '{' Lista_E '}' ';' {$$ = " <td>"+" DECLARACION VECTOR"+"</td><td>"+$1+"</td><td>"+$4+"</td>";};
      
-    ModifVec: Identificador '[' ENTERO ']' '=' e  ';'{} ; 
+    ModifVec: Identificador '[' ENTERO ']' '=' e  ';'{$$ = " <td>"+" MODIFICACION VECTOR"+"</td><td>"+$1+"</td><td>"+$6+"</td>";} ; 
     
-    Listas: list '<' Tipo '>' Identificador '=' new list  '<' Tipo '>' ';' {}
+    Listas: list '<' Tipo '>' Identificador '=' new list  '<' Tipo '>' ';' {$$ = " <td>"+" DECLARACION LISTA"+"</td><td>"+$1+"</td><td>"+$4+"</td>";}
          | list '<' Tipo '>' Identificador '=' tochararray '(' e ')' ';' {};
 
     Modilist : Identificador '[' '[' ENTERO ']' ']' = e ';' {} ; 
 
     Addlist : Identificador '.' add '(' e ')' ';' {} ; 
 
-    Sent1: Sent1 IF{}
-    |Sent1 Swit{}
-    |Sent1 Whil{}
-    |Sent1 Do{}
-    |Sent1 Var{$$=$1+"$"+$2;}
+    Sent1: Sent1 IF{$$=$1+" "+$2;}
+    |Sent1 Swit{$$=$1+" "+$2;}
+    |Sent1 Whil{$$=$1+" "+$2;}
+    |Sent1 Do{$$=$1+" "+$2;}
+    |Sent1 Var{$$=$1+" "+$2;}
     |Sent1 Imprimir{}
-    |Sent1 LFunc{$$=$1+"$"+$2;}
-    |Sent1 Avar{$$=$1+"$"+$2;}
-    |Sent1 Fo{}
+    |Sent1 LFunc{$$=$1+" "+$2;}
+    |Sent1 Avar{$$=$1+" "+$2;}
+    |Sent1 Fo{$$=$1;}
     |Sent1 DecVec{$$=$1;}
     |Sent1 ModifVec{}
     |Sent1 Listas {$$=$1;}
     |Sent1 Modilist{}
     |Sent1 ejecuciones{$$=$1;}
     |Sent1 Addlist{$$=$1;}
-    |IF{}
-    |Swit{}
-    |Whil{}
-    |Do{}
+    |IF{$$=$1;}
+    |Swit{$$=$1;}
+    |Whil{$$=$1;}
+    |Do{$$=$1;}
     |Var{$$=$1;}
-    |Imprimir{$$=$1;}
+    |Imprimir{}
     |LFunc{$$=$1;}
     |Avar{$$=$1;}
     |DecVec{$$=$1;}
-    |ModifVec{}
+    |ModifVec{$$=$1;}
     |Listas{$$=$1;}
-    |Modilist{}
+    |Modilist{$$=$1;}
     |Addlist{$$=$1;}
     |ejecuciones{$$=$1;}
-    |Fo{};
+    |Fo{$$=$1;};
 
 
 

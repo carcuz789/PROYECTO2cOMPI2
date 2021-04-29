@@ -3,6 +3,7 @@
 
 var Lista_Original = new Array();
 var Lista_Copia = new Array();
+var Lista_Copia2 = new Array();
 class General {
 
     constructor(id, tipo, clase, metodo, parametro, tipo1, CantidadF, CantidadM) {
@@ -32,6 +33,7 @@ function Conn() {
             //$("#Muestra1").html(ast);
             var arbolito = data.toString();
             console.log(data.toString());
+            console.log("llega la data -----------------");
             arbol(arbolito);
 
 
@@ -63,19 +65,24 @@ function Conn() {
             var cadena = "";
 
             for (var i = 0; i < ast1.length; i++) {
-                //console.log(ast1[i].toString())
-                if (ast1[i].toString() !== 'import' && ast1[i].toString() !== '{' && ast1[i].toString() !== '}' /*&& ast1[i].toString() !== ';'*/ && ast1[i].toString() !== ',' && ast1[i].toString() !== 'if' && ast1[i].toString() !== 'switch' && ast1[i].toString() !== 'while' && ast1[i].toString() !== 'do' && ast1[i].toString() !== 'for' && ast1[i].toString() !== 'System' && ast1[i].toString() !== 'out' && ast1[i].toString() !== 'print' && ast1[i].toString() !== 'println'/**/ && ast1[i].toString() !== '.' && ast1[i].toString() !== '%' && ast1[i].toString() !== ':' /*&& ast1[i].toString() !== ';'*/ && ast1[i].toString() !== ',' && ast1[i].toString() !== 'break' && ast1[i].toString() !== 'default' && ast1[i].toString() !== 'case' && ast1[i].toString() !== '==' && ast1[i].toString() !== '!=' && ast1[i].toString() !== '>=' && ast1[i].toString() !== '<=' && ast1[i].toString() !== '!' && ast1[i].toString() !== '&&' /**/ && ast1[i].toString() !== '||' && ast1[i].toString() !== '>' && ast1[i].toString() !== '<' /*&& ast1[i].toString() !== ';'*/ && ast1[i].toString() !== 'true' && ast1[i].toString() !== 'false' && ast1[i].toString() !== 'continue' && ast1[i].toString() !== 'return' && ast1[i].toString() !== 'else' && ast1[i].toString() !== '+' && ast1[i].toString() !== '-' && ast1[i].toString() !== '*' && ast1[i].toString() !== '/' && ast1[i].toString() !== '^') {
-                    cadena += ast1[i] + " ";
+
+                 Lista_Copia2.push(ast1[i].toString());
+             //   console.log(ast1[i].toString())
+              //  if (ast1[i].toString() !== 'import' && ast1[i].toString() !== '{' && ast1[i].toString() !== '}' /*&& ast1[i].toString() !== ';'*/ && ast1[i].toString() !== ',' && ast1[i].toString() !== 'if' && ast1[i].toString() !== 'switch' && ast1[i].toString() !== 'while' && ast1[i].toString() !== 'do' && ast1[i].toString() !== 'for' && ast1[i].toString() !== 'System' && ast1[i].toString() !== 'out' && ast1[i].toString() !== 'print' && ast1[i].toString() !== 'println'/**/ && ast1[i].toString() !== '.' && ast1[i].toString() !== '%' && ast1[i].toString() !== ':' /*&& ast1[i].toString() !== ';'*/ && ast1[i].toString() !== ',' && ast1[i].toString() !== 'break' && ast1[i].toString() !== 'default' && ast1[i].toString() !== 'case' && ast1[i].toString() !== '==' && ast1[i].toString() !== '!=' && ast1[i].toString() !== '>=' && ast1[i].toString() !== '<=' && ast1[i].toString() !== '!' && ast1[i].toString() !== '&&' /**/ && ast1[i].toString() !== '||' && ast1[i].toString() !== '>' && ast1[i].toString() !== '<' /*&& ast1[i].toString() !== ';'*/ && ast1[i].toString() !== 'true' && ast1[i].toString() !== 'false' && ast1[i].toString() !== 'continue' && ast1[i].toString() !== 'return' && ast1[i].toString() !== 'else' && ast1[i].toString() !== '+' && ast1[i].toString() !== '-' && ast1[i].toString() !== '*' && ast1[i].toString() !== '/' && ast1[i].toString() !== '^') {
+               //     cadena += ast1[i] + " ";
                     //console.log(cadena);
-                    Lista_Original.push(ast1[i].toString());
+                  
 
-                }
-
-                // console.log(Lista_Original);
+            //    }
+                Lista_Original.push(ast1[i].toString());
+               
                 //Reportes();
             }
-
-
+           
+            console.log("mechito");
+            console.log(Lista_Original);
+            var textotabla = "<h1>TABLA DE SIMBOLOS</h1>";
+            document.getElementById("tablatokens").innerHTML =textotabla ;
 
 
 
@@ -131,6 +138,12 @@ var Ids = "", Ids1 = "";
 var NClase = "", NClase1 = "";
 var NMetodo = "", NMetodo1 = "", NMetodos = "", NMetodos1 = "", Nfuncion = "", Nfuncion1 = "";
 var html1 = "", html2 = "", html3 = "", contador = 0, contador1 = 0;
+var TABLASIMBOLOS="";
+
+TABLASIMBOLOS += "<br><h3>TABLA DE SIMBOLOS</h3><table class=\"default\"> ";
+TABLASIMBOLOS += "<tr><th>Nombre </th><th>Tipo Valor</th><th>Ambito</th></tr>";
+
+
 
 function Reportes() {
     for (let index = 0; index < Lista_Original.length; index++) {
@@ -140,6 +153,7 @@ function Reportes() {
         // console.log(actual + " actual");
         // console.log(actual1 + " actual1");
         // console.log(actual2 + " actual2");
+        
         if ((actual === "class") && (contador == 0)) {
             console.log('es la clase ' + actual1);
             contador++;
@@ -165,6 +179,8 @@ function Reportes() {
             case 'int':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo int ' + actual1 + " de la clase");
+                    TABLASIMBOLOS+= " <td>"+"es una funcion tipo int"+"</td><td>"+"int"+"</td><td>"+actual+"</td>";
+
                     CantidadM++;
                     tipom = "int";
                     NMetodos += actual1 + " ";
@@ -172,6 +188,7 @@ function Reportes() {
                 } else {
                     console.log('es una variable tipo int ' + actual1);
                     tipov = "int";
+                    TABLASIMBOLOS+= " <td>"+"variable tipo int"+"</td><td>"+"int"+"</td><td>"+actual1+"</td>";
                     L_Variable.push(new General(actual1, tipov, NClase, NMetodo));
                     if (Lista_Original[index + 2] != ';') {
                         for (let w = index + 2; w < Lista_Original.length; w++) {
@@ -193,12 +210,16 @@ function Reportes() {
             case 'String':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo String ' + actual1);
+                    TABLASIMBOLOS+= " <td>"+"es una funcion tipo String"+"</td><td>"+"String"+"</td><td>"+actual1+"</td>";
+
                     CantidadM++;
                     tipom = "String";
                     NMetodos += actual1 + " ";
                     NMetodo = actual1;
                 } else {
                     console.log('es una variable tipo String ' + actual1);
+                    TABLASIMBOLOS+= " <td>"+"es una variable tipo String"+"</td><td>"+"String"+"</td><td>"+actual1+"</td>";
+
                     tipov = "String";
                     L_Variable.push(new General(actual1, tipov, NClase, NMetodo));
                     if (Lista_Original[index + 2] != ';') {
@@ -221,6 +242,8 @@ function Reportes() {
             case 'char':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo char ' + actual1);
+                    TABLASIMBOLOS+= " <td>"+"es una funcion tipo char"+"</td><td>"+"char"+"</td><td>"+actual1+"</td>";
+
                     CantidadM++;
                     tipom = "char";
                     NMetodos += actual1 + " ";
@@ -228,6 +251,8 @@ function Reportes() {
 
                 } else {
                     console.log('es una variable tipo char ' + actual1);
+                    TABLASIMBOLOS+= " <td>"+"es una variable tipo char"+"</td><td>"+"char"+"</td><td>"+actual1+"</td>";
+
                     tipov = "char";
                     L_Variable.push(new General(actual1, tipov, NClase, NMetodo));
                     if (Lista_Original[index + 2] != ';') {
@@ -250,6 +275,8 @@ function Reportes() {
             case 'boolean':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo boolena ' + actual1);
+                    TABLASIMBOLOS+= " <td>"+"es una funcion tipo booleana"+"</td><td>"+"boolean"+"</td><td>"+actual1+"</td>";
+
                     CantidadM++;
                     tipom = "boolean";
                     NMetodos += actual1 + " ";
@@ -257,6 +284,8 @@ function Reportes() {
 
                 } else {
                     console.log('es una variable tipo boolean ' + actual1);
+                    TABLASIMBOLOS+= " <td>"+"es una variable tipo booleana"+"</td><td>"+"boolean"+"</td><td>"+actual1+"</td>";
+
                     tipov = "boolean";
                     L_Variable.push(new General(actual1, tipov, NClase, NMetodo));
                     if (Lista_Original[index + 2] != ';') {
@@ -279,6 +308,8 @@ function Reportes() {
             case 'double':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo double ' + actual1);
+                    TABLASIMBOLOS+= " <td>"+"es una funcion tipo double"+"</td><td>"+"double"+"</td><td>"+actual1+"</td>";
+
                     CantidadM++;
                     tipom = "double";
                     NMetodos += actual1 + " ";
@@ -286,6 +317,8 @@ function Reportes() {
 
                 } else {
                     console.log('es una variable tipo double ' + actual1);
+                    TABLASIMBOLOS+= " <td>"+"es una variable tipo double"+"</td><td>"+"double"+"</td><td>"+actual1+"</td>";
+
                     tipov = "double";
                     L_Variable.push(new General(actual1, tipov, NClase, NMetodo));
                     if (Lista_Original[index + 2] != ';') {
@@ -316,6 +349,8 @@ function Reportes() {
 
                     if (par !== ')') {
                         console.log('es parametro tipo ' + par + ' nombre ' + par1);
+                        TABLASIMBOLOS+= " <td>"+"es un parametro"+"</td><td>"+par+"</td><td>"+par1+"</td>";
+
                         parametro += par + ", ";
                         index1++;
                         index = index1;
@@ -340,6 +375,8 @@ function Reportes() {
             case 'void':
                 if (actual2 === '(') {
                     console.log('es una metodo tipo void ' + actual1);
+                    TABLASIMBOLOS+= " <td>"+"es un metodo tipo void"+"</td><td>"+"void"+"</td><td>"+actual1+"</td>";
+
                     CantidadM++;
                     tipom = "void";
                     NMetodos += actual1 + " ";
@@ -661,12 +698,11 @@ function Reportes() {
     }
 
     html1 += "</tbody></table>";
-    document.getElementById("ReporteClase").innerHTML = html1;
+   
 
 
 
 }
-
 function arbol(cadena) {
     var nuevo = document.getElementById('html');
     nuevo.innerHTML = cadena;

@@ -64,7 +64,9 @@
 
         <br>
 
-        <button onclick="Conn()">ANALIZAR</button>
+        <button onclick="Conn()">COMPILAR</button>
+        <button onclick="Conn()">REPORTE AST</button>
+        <button onclick="Conn()">NUEVA PESTANA</button>
         <h1>ENTRADA</h1>
         <textarea name="operacion" id="operacion" cols="30" rows="4" style="width:800px;height:400px"></textarea>
         <br>
@@ -76,13 +78,13 @@
         <br>
         
 
-        <div id="ReporteClase"></div>
+        <div id="tablatokens"></div>
+       
         <div id="ReporteVariable"></div>
         <div id="ReporteMetodo"></div>
         <div id="TablaError"></div>
         <div id="html" class="demo"></div>
-        <div id="wenas"></div>
-
+        <div id="wenas"></div>      
         <div id="Muestra1"></div>
         <div id="Muestra2"></div>
       </div>
@@ -135,7 +137,7 @@
 
       var textFileAsBlob = new Blob([textToWrite], { type: 'text/java' });
 
-      var fileNameToSaveAs = "Entrada.java";
+      var fileNameToSaveAs = "Entrada.ty";
 
 
       var downloadLink = document.createElement("a");

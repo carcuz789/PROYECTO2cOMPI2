@@ -23,7 +23,7 @@
 
 /*------------------------------------------------LEXICO------------------------------------------------*/
 %lex
-
+%options case-insensitive
 %%
 \s+                                 // se ignoran espacios en blanco
 "//".*                              // comentario simple línea
@@ -161,8 +161,14 @@ Scl:S1{$$=$1;};
 S1: Imprimir{$$=$1;}
 |Func{$$=$1;}
 |Metodo{$$=$1;}
+|LFunc{$$=$1;}
 |Var{$$=$1;}
 |Avar{$$=$1;}
+|DecVec{$$=$1;}
+|ModifVec{$$=$1;}
+|Listas{$$=$1;}
+|Modilist{$$=$1;}
+|Addlist{$$=$1;}
 |ejecuciones{$$=$1;}
 ;
 
@@ -377,12 +383,12 @@ Aum:AUMETO{}
     |Sent1 LFunc{$$=$1+"$"+$2;}
     |Sent1 Avar{$$=$1+"$"+$2;}
     |Sent1 Fo{$$=$1+"$"+$2;}
-    |Sent1 DecVec{$$=$1;}
-    |Sent1 ModifVec{$$=$1;}
-    |Sent1 Listas {$$=$1;}
-    |Sent1 Modilist{$$=$1;}
-    |Sent1 ejecuciones{$$=$1;}
-    |Sent1 Addlist{$$=$1;}
+    |Sent1 DecVec{$$=$1+"$"+$2;}
+    |Sent1 ModifVec{$$=$1+"$"+$2;}
+    |Sent1 Listas {$$=$1+"$"+$2;}
+    |Sent1 Modilist{$$=$1+"$"+$2;}
+    |Sent1 ejecuciones{$$=$1+"$"+$2;}
+    |Sent1 Addlist{$$=$1+"$"+$2;}
     |IF{$$=$1;}
     |Swit{$$=$1;}
     |Whil{$$=$1;}

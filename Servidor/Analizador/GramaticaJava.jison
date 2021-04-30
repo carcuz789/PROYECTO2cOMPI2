@@ -23,7 +23,7 @@
 
 /*------------------------------------------------LEXICO------------------------------------------------*/
 %lex
-
+%options case-insensitive
 %%
 \s+                                 // se ignoran espacios en blanco
 "//".*                              // comentario simple línea
@@ -150,6 +150,7 @@ S0: S10 EOF
 
 S10:S10 Scl {$$=$1+"$"+$2;}
 |Scl{$$=$1;}
+|error {CErrores.Errores.add(new CNodoError.NodoError("Sintactico","No se esperaba el token: "+yytext,yylineno));}
 ;
 
 
@@ -159,10 +160,16 @@ Scl:S1{$$=$1;};
 
 S1: Imprimir{$$ = "<ul><li>Imprimir<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |Func{$$ = "<ul><li>Declaracion Funcion<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|LFunc{$$ = "<ul><li>llamada Funcion<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |Metodo{$$ = "<ul><li>Declaracion Metodo<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |Var{$$ = "<ul><li>Declaracion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |Avar{$$ = "<ul><li>Asignacion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
-|ejecuciones {$$ = "<ul><li>Funcion exec <ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|DecVec{$$ = "<ul><li>Declaracion Vector<ul><li>"+$1+"</li></ul></li></ul>";}
+|ModifVec{$$ = "<ul><li>Modificacion Vector<ul><li>"+$1+"</li></ul></li></ul>";}
+|Listas{$$ = "<ul><li>Declaracion Lista<ul><li>"+$1+"</li></ul></li></ul>";}
+|Modilist{$$ = "<ul><li>Modificar Lista<ul><li>"+$1+"</li></ul></li></ul>";}
+|Addlist{$$ = "<ul><li>Agregar a lista <ul><li>"+$1+"</li></ul></li></ul>";}
+|ejecuciones{$$ = "<ul><li>Exec<ul><li>"+$1+"</li></ul></li></ul>";}
 ;
 
 
@@ -215,7 +222,7 @@ Sent113: Sent1 return ';' '}'{$$=$1+"<ul><li>Return"+$2+"</li></ul>";}
 
 LFunc: Identificador '(' Lista_E ')' ';' {$$=$1+"$"+$2+"$"+$3+"$"+$4;};
 
-Lista_E: Lista_E ',' e{$$=$1+"$"+$2+"$"+$3;}
+Lista_E: Lista_E ',' e{$$=$1+"$"+","+"$"+$3;}
 |e{$$=$1;};
 
 
@@ -298,23 +305,23 @@ Senten: break {}
     |Tipo
          {$$ = "<ul><li>tipo<ul><li>"+$1+"</li></ul></li></ul>";}
     |tolower '(' e ')'
-         {$$ = "<ul><li>Llamada tolower<ul><li>"+$1+"</li></ul></li></ul>";}
+         {$$ = "<ul><li>Llamada tolower<ul><li>"+$3+"</li></ul></li></ul>";}
     |toupper '(' e ')'
-         {$$ = "<ul><li>Llamada toupper<ul><li>"+$1+"</li></ul></li></ul>";}
+         {$$ = "<ul><li>Llamada toupper<ul><li>"+$3+"</li></ul></li></ul>";}
     |lenght '(' e ')'
-        {$$ = "<ul><li>Llamada lenght<ul><li>"+$1+"</li></ul></li></ul>";}
+        {$$ = "<ul><li>Llamada lenght<ul><li>"+$3+"</li></ul></li></ul>";}
     |truncate '(' e ')'
-        {$$ = "<ul><li>Llamada truncate<ul><li>"+$1+"</li></ul></li></ul>";}
+        {$$ = "<ul><li>Llamada truncate<ul><li>"+$3+"</li></ul></li></ul>";}
     |round '(' e ')'
-         {$$ = "<ul><li>Llamada round<ul><li>"+$1+"</li></ul></li></ul>";}
+         {$$ = "<ul><li>Llamada round<ul><li>"+$3+"</li></ul></li></ul>";}
     |typeof '(' e ')'
-         {$$ = "<ul><li>Llamada typeof<ul><li>"+$1+"</li></ul></li></ul>";}
+         {$$ = "<ul><li>Llamada typeof<ul><li>"+$3+"</li></ul></li></ul>";}
     |tostring '(' e ')'
-         {$$ = "<ul><li>Llamada to string<ul><li>"+$1+"</li></ul></li></ul>";}
+         {$$ = "<ul><li>Llamada to string<ul><li>"+$3+"</li></ul></li></ul>";}
     |tochararray '(' e ')'
-         {$$ = "<ul><li>Llamada To charArray<ul><li>"+$1+"</li></ul></li></ul>";}
+         {$$ = "<ul><li>Llamada To charArray<ul><li>"+$3+"</li></ul></li></ul>";}
     |Identificador
-        {$$ = "<ul><li>Identificador<ul><li>"+$1+"</li></ul></li></ul>";};
+        {$$ = "<ul><li>Identificador<ul><li>"+$3+"</li></ul></li></ul>";};
         
     Swit: switch '(' e ')' '{' Cas Def '}' {$$="<ul><li>Condicion Switch "+$3+"</li></ul><ul><li>Cuerpo Switch "+$6+$7+"</li></ul>";};
 
@@ -336,7 +343,7 @@ Senten: break {}
     |default ':' {$$=$1;};
 
 
-    Whil: while '(' e ')' '{' Sent111 {$$="<ul><li>Condicion While "+$3+"</li></ul><ul><li>Cuerpo While "+$6+"</li></ul>"};
+    Whil: while '(' e ')' '{' Sent111 {$$="<ul><li>Condicion While "+$3+"</li></ul><ul><li>Cuerpo While "+$6+"</li></ul>";};
 
     Sent111: Sent1 Senten ';' '}'{$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
     |Sent1 '}'{$$=$1}
@@ -385,7 +392,12 @@ Senten: break {}
     |Sent1 LFunc{$$="<ul><li>"+$1+"<ul><li>Asignacion Funcion <ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
     |Sent1 Avar{$$="<ul><li>"+$1+"<ul><li>Asignacion Variable<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
     |Sent1 Fo{$$="<ul><li>"+$1+"<ul><li>Declaracion For<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
-    |Sent1 Addlist{$$ = "<ul><li>Modificar Lista<ul><li>"+$1+"</li></ul></li></ul>";}
+    |Sent1 Addlist{$$="<ul><li>"+$1+"<ul><li>Agregar a lista<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
+    |Sent1 DecVec{$$="<ul><li>"+$1+"<ul><li>Declaracion Vectore<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
+    |Sent1 ModifVec{$$="<ul><li>"+$1+"<ul><li>Modificar vectores<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
+    |Sent1 Listas{$$="<ul><li>"+$1+"<ul><li>Declaracion Listas<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
+    |Sent1 Modilist{$$="<ul><li>"+$1+"<ul><li>Modificar Listas<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
+    
     |IF{$$="<ul><li>Declaracion If <ul><li>"+$1+"</li></ul></li></ul>";}
     |Swit{$$="<ul><li>Declaracion Switch<ul><li>"+$1+"</li></ul></li></ul>";}
     |Whil{$$="<ul><li>Declaracion While<ul><li>"+$1+"</li></ul></li></ul>";}
@@ -400,7 +412,9 @@ Senten: break {}
     |Listas{$$ = "<ul><li>Declaracion Lista<ul><li>"+$1+"</li></ul></li></ul>";}
     |Modilist{$$ = "<ul><li>Modificar Lista<ul><li>"+$1+"</li></ul></li></ul>";}
     |Addlist{$$ = "<ul><li>Agregar a lista <ul><li>"+$1+"</li></ul></li></ul>";}
-    |ejecuciones{$$ = "<ul><li>Exec<ul><li>"+$1+"</li></ul></li></ul>";};
+    |ejecuciones{$$ = "<ul><li>Exec<ul><li>"+$1+"</li></ul></li></ul>";}
+    |error {CErrores.Errores.add(new CNodoError.NodoError("Sintactico","No se esperaba el token: "+yytext,yylineno));}
+    ;
 
  
  

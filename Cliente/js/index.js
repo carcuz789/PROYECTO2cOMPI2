@@ -81,8 +81,8 @@ function Conn() {
            
             console.log("mechito");
             console.log(Lista_Original);
-            var textotabla = "<h1>TABLA DE SIMBOLOS</h1>";
-            document.getElementById("tablatokens").innerHTML =textotabla ;
+            // var textotabla = "<h1>TABLA DE SIMBOLOS</h1>";
+            // document.getElementById("tablatokens").innerHTML =textotabla ;
 
 
 
@@ -91,13 +91,17 @@ function Conn() {
         }
     });
 
-    var texto1 = document.getElementById("Prueba").value;
+    var texto1 = texto;
     var url2 = 'http://localhost:8082/EnvioTokCopia/';
-
+    var TABLASIMBOLOS2="";
+   TABLASIMBOLOS2 += "<h1>TABLA DE SIMBOLOS</h1><table class=\"default\"> ";
+   TABLASIMBOLOS2 += "<tr><th>Nombre </th><th>Tipo Valor</th><th>Ambito</th></tr>";
     $.post(url2, { text: texto1 }, function (data2, status2) {
         if (status2.toString() == "success") {
             var ast2 = data2;
             //      Lista_Copia = data2;
+            TABLASIMBOLOS2 += data2.toString();
+            TABLASIMBOLOS2 +="</table>";
             var cadena = "";
 
             for (var i = 0; i < ast2.length; i++) {
@@ -111,8 +115,9 @@ function Conn() {
 
                 //Reportes();
             }
-
-            //    document.getElementById("Salida").innerText = cadena;
+                console.log("mechito2");
+                console.log(ast2);
+                document.getElementById("tablatokens").innerHTML = TABLASIMBOLOS2;
 
             cadena = "";
             Reportes();
@@ -144,8 +149,12 @@ TABLASIMBOLOS += "<br><h3>TABLA DE SIMBOLOS</h3><table class=\"default\"> ";
 TABLASIMBOLOS += "<tr><th>Nombre </th><th>Tipo Valor</th><th>Ambito</th></tr>";
 
 
+// format ofi .dot
 
+console.log(TABLASIMBOLOS);
 function Reportes() {
+
+
     for (let index = 0; index < Lista_Original.length; index++) {
         var actual = Lista_Original[index];
         var actual1 = Lista_Original[index + 1];
@@ -179,7 +188,7 @@ function Reportes() {
             case 'int':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo int ' + actual1 + " de la clase");
-                    TABLASIMBOLOS+= " <td>"+"es una funcion tipo int"+"</td><td>"+"int"+"</td><td>"+actual+"</td>";
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una funcion tipo int"+"</td><td>"+"int"+"</td><td>"+actual1+"</td></tr>";
 
                     CantidadM++;
                     tipom = "int";
@@ -188,7 +197,7 @@ function Reportes() {
                 } else {
                     console.log('es una variable tipo int ' + actual1);
                     tipov = "int";
-                    TABLASIMBOLOS+= " <td>"+"variable tipo int"+"</td><td>"+"int"+"</td><td>"+actual1+"</td>";
+                    TABLASIMBOLOS+= " <tr><td>"+"variable tipo int"+"</td><td>"+"int"+"</td><td>"+actual1+"</td></tr>";
                     L_Variable.push(new General(actual1, tipov, NClase, NMetodo));
                     if (Lista_Original[index + 2] != ';') {
                         for (let w = index + 2; w < Lista_Original.length; w++) {
@@ -210,7 +219,7 @@ function Reportes() {
             case 'String':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo String ' + actual1);
-                    TABLASIMBOLOS+= " <td>"+"es una funcion tipo String"+"</td><td>"+"String"+"</td><td>"+actual1+"</td>";
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una funcion tipo String"+"</td><td>"+"String"+"</td><td>"+actual1+"</td></tr>";
 
                     CantidadM++;
                     tipom = "String";
@@ -218,7 +227,7 @@ function Reportes() {
                     NMetodo = actual1;
                 } else {
                     console.log('es una variable tipo String ' + actual1);
-                    TABLASIMBOLOS+= " <td>"+"es una variable tipo String"+"</td><td>"+"String"+"</td><td>"+actual1+"</td>";
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una variable tipo String"+"</td><td>"+"String"+"</td><td>"+actual1+"</td></tr>";
 
                     tipov = "String";
                     L_Variable.push(new General(actual1, tipov, NClase, NMetodo));
@@ -242,7 +251,7 @@ function Reportes() {
             case 'char':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo char ' + actual1);
-                    TABLASIMBOLOS+= " <td>"+"es una funcion tipo char"+"</td><td>"+"char"+"</td><td>"+actual1+"</td>";
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una funcion tipo char"+"</td><td>"+"char"+"</td><td>"+actual1+"</td></tr>";
 
                     CantidadM++;
                     tipom = "char";
@@ -251,7 +260,7 @@ function Reportes() {
 
                 } else {
                     console.log('es una variable tipo char ' + actual1);
-                    TABLASIMBOLOS+= " <td>"+"es una variable tipo char"+"</td><td>"+"char"+"</td><td>"+actual1+"</td>";
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una variable tipo char"+"</td><td>"+"char"+"</td><td>"+actual1+"</td></tr>";
 
                     tipov = "char";
                     L_Variable.push(new General(actual1, tipov, NClase, NMetodo));
@@ -275,7 +284,7 @@ function Reportes() {
             case 'boolean':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo boolena ' + actual1);
-                    TABLASIMBOLOS+= " <td>"+"es una funcion tipo booleana"+"</td><td>"+"boolean"+"</td><td>"+actual1+"</td>";
+                    TABLASIMBOLOS+= " <tr><td>"+"es una funcion tipo booleana"+"</td><td>"+"boolean"+"</td><td>"+actual1+"</td></tr>";
 
                     CantidadM++;
                     tipom = "boolean";
@@ -284,7 +293,7 @@ function Reportes() {
 
                 } else {
                     console.log('es una variable tipo boolean ' + actual1);
-                    TABLASIMBOLOS+= " <td>"+"es una variable tipo booleana"+"</td><td>"+"boolean"+"</td><td>"+actual1+"</td>";
+                    TABLASIMBOLOS+= " <tr><td>"+"es una variable tipo booleana"+"</td><td>"+"boolean"+"</td><td>"+actual1+"</td></tr>";
 
                     tipov = "boolean";
                     L_Variable.push(new General(actual1, tipov, NClase, NMetodo));
@@ -308,7 +317,7 @@ function Reportes() {
             case 'double':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo double ' + actual1);
-                    TABLASIMBOLOS+= " <td>"+"es una funcion tipo double"+"</td><td>"+"double"+"</td><td>"+actual1+"</td>";
+                    TABLASIMBOLOS+= " <tr><td>"+"es una funcion tipo double"+"</td><td>"+"double"+"</td><td>"+actual1+"</td></tr>";
 
                     CantidadM++;
                     tipom = "double";
@@ -317,7 +326,7 @@ function Reportes() {
 
                 } else {
                     console.log('es una variable tipo double ' + actual1);
-                    TABLASIMBOLOS+= " <td>"+"es una variable tipo double"+"</td><td>"+"double"+"</td><td>"+actual1+"</td>";
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una variable tipo double"+"</td><td>"+"double"+"</td><td>"+actual1+"</td></tr>";
 
                     tipov = "double";
                     L_Variable.push(new General(actual1, tipov, NClase, NMetodo));
@@ -338,19 +347,23 @@ function Reportes() {
                     }
                 }
                 break;
-            case '(':
-                for (let index1 = index + 1; index1 < Lista_Original.length; index1++) {
+           
 
+            case '(':
+                var idkl="";
+                for (let index1 = index + 1; index1 < Lista_Original.length; index1++) {
+                    var paraux = Lista_Original[index1-1];
                     var par = Lista_Original[index1];
                     var par1 = Lista_Original[index1 + 1];
                     // console.log(par+" par");
                     // console.log(par1+" par1");
-
-
+                    if(idkl===""){
+                        idkl = paraux;
+                    }
+                    
                     if (par !== ')') {
                         console.log('es parametro tipo ' + par + ' nombre ' + par1);
-                        TABLASIMBOLOS+= " <td>"+"es un parametro"+"</td><td>"+par+"</td><td>"+par1+"</td>";
-
+                       
                         parametro += par + ", ";
                         index1++;
                         index = index1;
@@ -358,12 +371,16 @@ function Reportes() {
                         if (parametro === "") {
                             parametro = "Sin Parametro";
                             L_Metodo.push(new General("", "", NClase, NMetodo, parametro, tipom, "", ""));
+                            TABLASIMBOLOS+= "<tr> <td>"+"llamada a funcion"+"</td><td>"+idkl+"</td><td>"+parametro+"</td></tr>";
+
                           //  NMetodo = "";
                             parametro = "";
                             tipom = "";
 
                         } else {
                             L_Metodo.push(new General("", "", NClase, NMetodo, parametro, tipom, "", ""));
+                            TABLASIMBOLOS+= "<tr> <td>"+"es un parametro"+"</td><td>"+par+"</td><td>"+parametro+"</td></tr>";
+
                           //  NMetodo = "";
                             parametro = "";
                             tipom = "";
@@ -375,7 +392,7 @@ function Reportes() {
             case 'void':
                 if (actual2 === '(') {
                     console.log('es una metodo tipo void ' + actual1);
-                    TABLASIMBOLOS+= " <td>"+"es un metodo tipo void"+"</td><td>"+"void"+"</td><td>"+actual1+"</td>";
+                    TABLASIMBOLOS+= "<tr> <td>"+"es un metodo tipo void"+"</td><td>"+"void"+"</td><td>"+actual1+"</td></tr>";
 
                     CantidadM++;
                     tipom = "void";
@@ -422,12 +439,15 @@ function Reportes() {
             case 'int':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo int ' + actual1 + " de la clase");
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una funcion tipo int"+"</td><td>"+"int"+"</td><td>"+actual1+"</td></tr>";
+
                     tipom1 = "int";
                     CantidadM1++;
                     NMetodos1 += actual1 + " ";
                     NMetodo1 = actual1;
                 } else {
                     console.log('es una variable tipo int ' + actual1);
+                    TABLASIMBOLOS+= " <tr><td>"+"variable tipo int"+"</td><td>"+"int"+"</td><td>"+actual1+"</td></tr>";
                     tipov1 = "int";
                     L_Variable1.push(new General(actual1, tipov1, NClase1, NMetodo1));
                     if (Lista_Copia[index + 2] != ';') {
@@ -450,12 +470,16 @@ function Reportes() {
             case 'String':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo String ' + actual1);
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una funcion tipo String"+"</td><td>"+"String"+"</td><td>"+actual1+"</td></tr>";
+
                     tipom1 = "String";
                     CantidadM1++;
                     NMetodos1 += actual1 + " ";
                     NMetodo1 = actual1;
                 } else {
                     console.log('es una variable tipo String ' + actual1);
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una variable tipo String"+"</td><td>"+"String"+"</td><td>"+actual1+"</td></tr>";
+
                     tipov1 = "String";
                     L_Variable1.push(new General(actual1, tipov1, NClase1, NMetodo1));
                     if (Lista_Copia[index + 2] != ';') {
@@ -478,6 +502,8 @@ function Reportes() {
             case 'char':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo char ' + actual1);
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una funcion tipo char"+"</td><td>"+"char"+"</td><td>"+actual1+"</td></tr>";
+
                     tipom1 = "char";
                     CantidadM1++;
                     NMetodos1 += actual1 + " ";
@@ -485,6 +511,8 @@ function Reportes() {
 
                 } else {
                     console.log('es una variable tipo char ' + actual1);
+                    TABLASIMBOLOS+= " <tr><td>"+"es una variable tipo char"+"</td><td>"+"char"+"</td><td>"+actual1+"</td></tr>";
+
                     tipov1 = "char";
                     L_Variable1.push(new General(actual1, tipov1, NClase1, NMetodo1));
                     if (Lista_Copia[index + 2] != ';') {
@@ -507,6 +535,8 @@ function Reportes() {
             case 'boolean':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo boolena ' + actual1);
+                    TABLASIMBOLOS+= " <tr><td>"+"es una funcion tipo booleana"+"</td><td>"+"boolean"+"</td><td>"+actual1+"</td></tr>";
+
                     tipom1 = "boolean";
                     CantidadM1++;
                     NMetodos1 += actual1 + " ";
@@ -514,6 +544,8 @@ function Reportes() {
 
                 } else {
                     console.log('es una variable tipo boolean ' + actual1);
+                    TABLASIMBOLOS+= "<tr> <td>"+"es una variable tipo booleana"+"</td><td>"+"boolean"+"</td><td>"+actual1+"</td></tr>";
+
                     tipov1 = "boolean";
                     L_Variable1.push(new General(actual1, tipov1, NClase1, NMetodo1));
                     if (Lista_Copia[index + 2] != ';') {
@@ -536,6 +568,8 @@ function Reportes() {
             case 'double':
                 if (actual2 === '(') {
                     console.log('es una funcion tipo double ' + actual1);
+                    TABLASIMBOLOS+= " <tr><td>"+"es una funcion tipo double"+"</td><td>"+"double"+"</td><td>"+actual1+"</td></tr>";
+
                     tipom1 = "double";
                     CantidadM1++;
                     NMetodos1 += actual1 + " ";
@@ -543,6 +577,8 @@ function Reportes() {
 
                 } else {
                     console.log('es una variable tipo double ' + actual1);
+                    TABLASIMBOLOS+= " <tr><td>"+"es una variable tipo double"+"</td><td>"+"double"+"</td><td>"+actual1+"</td></tr>";
+
                     tipov1 = "double";
                     L_Variable1.push(new General(actual1, tipov1, NClase1, NMetodo1));
                     if (Lista_Copia[index + 2] != ';') {
@@ -572,7 +608,10 @@ function Reportes() {
 
 
                     if (par !== ')') {
+
                         console.log('es parametro tipo ' + par + ' nombre ' + par1);
+                        TABLASIMBOLOS+= " <tr><td>"+"es un parametro tipo"+"</td><td>"+par+"</td><td>"+par1+"</td></tr>";
+
                         parametro1 += par + ", ";
                         index1++;
                         index = index1;
@@ -597,6 +636,8 @@ function Reportes() {
             case 'void':
                 if (actual2 === '(') {
                     console.log('es una metodo tipo void ' + actual1);
+                    TABLASIMBOLOS+= "<tr> <td>"+"es un metodo tipo void"+"</td><td>"+"void"+"</td><td>"+actual1+"</td></tr>";
+
                     tipom1 = "void";
                     CantidadM1++;
                     NMetodos1 += actual1 + " ";
@@ -623,7 +664,10 @@ function Reportes() {
     // for (let j = 0; j < L_Variable1.length; j++) {
     //     console.log("Clase: " + L_Variable1[j].clase + " Metodo: " + L_Variable1[j].metodo + " Tipo: " + L_Variable1[j].tipo + " id: " + L_Variable1[j].id);
 
-    // }
+    // } 
+
+    TABLASIMBOLOS+="</table>";
+   // document.getElementById("tablatokens").innerHTML = TABLASIMBOLOS;
 
     for (let j = 0; j < L_Clase1.length; j++) {
         console.log("Clase1: " + L_Clase1[j].clase + " Metodo: " + L_Clase1[j].metodo + " Cantidad Metodos: " + L_Clase1[j].CantidadF);
@@ -650,7 +694,7 @@ function Reportes() {
         }
     }
     html3 += "</tbody></table>";
-    document.getElementById("ReporteVariable").innerHTML = html3;
+   // document.getElementById("ReporteVariable").innerHTML = html3;
     html2 += "<br><h3>Reporte Metodos</h3><table border=\"1px\" style=\"width:750px\;height:50px\"><tbody> ";
     html2 += "<tr style=\"width:550px;height:25px\"><td>Nombre Clase</td><td>Nombre Metodo</td><td>Tipo</td><td>Parametros</td>";
 
@@ -676,7 +720,7 @@ function Reportes() {
     }
 
     html2 += "</tbody></table>";
-    document.getElementById("ReporteMetodo").innerHTML = html2;
+    //document.getElementById("ReporteMetodo").innerHTML = html2;
     html1 += "<br><h3>Reporte Clase</h3>    <table border=\"1px\" style=\"width:750px\;height:50px\"><tbody> ";
     html1 += "<tr style=\"width:550px;height:25px\"><td>Nombre</td><td>Cantidad Metodos y/o funciones</td>";
     for (let i = 0; i < L_Clase.length; i++) {

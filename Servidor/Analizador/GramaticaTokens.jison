@@ -11,8 +11,8 @@
     var ini=0;
     var Cuerpo="",cadena1="",probe="";
 
-    // let CErrores=require('../JavaAST/Errores');
-    // let CNodoError=require('../JavaAST/NodoError');
+   // let CErrores=require('../JavaAST/Errores');
+   // let CNodoError=require('../JavaAST/NodoError');
     // let Tokens = require('..');
     function Borrar(){
        return "Hola";

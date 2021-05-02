@@ -178,7 +178,7 @@ break;
 case 33:
 this.$=$$[$0-4];
 break;
-case 35: case 45: case 57: case 123:
+case 35: case 45: case 57: case 116: case 123:
 this.$=$$[$0-1];
 break;
 case 38:
@@ -188,12 +188,9 @@ case 39:
 this.$=$$[$0-1]+"$"+ $$[$0];
 break;
 case 40:
-this.$="<tr> <td>"+"declaracion de metodo void"+"</td><td>"+"metodo"+"</td><td>"+$$[$0-5]+"</td></tr>"+$$[$0];
+this.$="<tr> <td>"+"identificacion de de metodo void"+"</td><td>"+"metodo"+"</td><td>"+$$[$0-5]+"</td></tr>"+$$[$0];
 break;
-case 41:
-this.$="<tr> <td>"+"declaracion de metodo void"+"</td><td>"+"metodo"+"</td><td>"+$$[$0-4]+"</td></tr>"+$$[$01];
-break;
-case 42:
+case 41: case 42:
 this.$="<tr> <td>"+"declaracion de metodo void"+"</td><td>"+"metodo"+"</td><td>"+$$[$0-4]+"</td></tr>"+$$[$0];
 break;
 case 43: case 103:
@@ -355,9 +352,6 @@ break;
 case 115: case 121:
 this.$=$$[$0-3]+" "+$$[$0-2]+"";
 break;
-case 116:
-this.$=$$[$0-1]
-break;
 case 117:
 this.$="Sentencia "+$$[$0-2]+"";
 break;
@@ -407,7 +401,7 @@ case 141:
 this.$=""+$$[$0-1]+"<tr> <td>"+"llamada a metodo tipo imprimir"+"</td><td>"+"print"+"</td><td>"+$$[$0]+"</td></tr>";
 break;
 case 142:
-this.$=""+$$[$0-1]+" "+"<tr> <td>"+"llamada a funcion"+"</td><td>"+"funcion"+"</td><td>"+$$[$0-1]+"</td></tr>";
+this.$=""+$$[$0-1]+" "+"<tr> <td>"+"llamada a funcion"+"</td><td>"+"funcion"+"</td><td>"+$$[$0]+"</td></tr>";
 break;
 case 143:
 this.$=""+$$[$0-1]+""+"<tr> <td>"+"Asignacion de variable"+"</td><td>"+"variable"+"</td><td>"+$$[$0]+"</td></tr>";

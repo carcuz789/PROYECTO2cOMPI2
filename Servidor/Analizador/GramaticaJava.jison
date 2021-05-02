@@ -150,7 +150,6 @@ S0: S10 EOF
 
 S10:S10 Scl {$$=$1+"$"+$2;}
 |Scl{$$=$1;}
-|error {CErrores.Errores.add(new CNodoError.NodoError("Sintactico","No se esperaba el token: "+yytext,yylineno));}
 ;
 
 
@@ -160,8 +159,8 @@ Scl:S1{$$=$1;};
 
 S1: Imprimir{$$ = "<ul><li>Imprimir<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |Func{$$ = "<ul><li>Declaracion Funcion<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
-|LFunc{$$ = "<ul><li>llamada Funcion<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |Metodo{$$ = "<ul><li>Declaracion Metodo<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
+|LFunc{$$ = "<ul><li>llamada Funcion<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |Var{$$ = "<ul><li>Declaracion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |Avar{$$ = "<ul><li>Asignacion Variable<ul><li>"+$1+"</li></ul></li></ul></li></ul>";}
 |DecVec{$$ = "<ul><li>Declaracion Vector<ul><li>"+$1+"</li></ul></li></ul>";}
@@ -321,7 +320,7 @@ Senten: break {}
     |tochararray '(' e ')'
          {$$ = "<ul><li>Llamada To charArray<ul><li>"+$3+"</li></ul></li></ul>";}
     |Identificador
-        {$$ = "<ul><li>Identificador<ul><li>"+$3+"</li></ul></li></ul>";};
+        {$$ = "<ul><li>Identificador<ul><li>"+$1+"</li></ul></li></ul>";};
         
     Swit: switch '(' e ')' '{' Cas Def '}' {$$="<ul><li>Condicion Switch "+$3+"</li></ul><ul><li>Cuerpo Switch "+$6+$7+"</li></ul>";};
 
@@ -346,7 +345,7 @@ Senten: break {}
     Whil: while '(' e ')' '{' Sent111 {$$="<ul><li>Condicion While "+$3+"</li></ul><ul><li>Cuerpo While "+$6+"</li></ul>";};
 
     Sent111: Sent1 Senten ';' '}'{$$=$1+"<ul><li>Sentencia<ul><li> "+$2+"</li></ul></li></ul>";}
-    |Sent1 '}'{$$=$1}
+    |Sent1 '}'{$$=$1;}
     |Senten ';' '}'{$$="<ul><li>Sentencia<ul><li> "+$1+"</li></ul></li></ul>";}
     |'}'{};
 
@@ -369,8 +368,7 @@ Senten: break {}
     |DECREMENTO{$$="<ul><li>Decremento "+$1+"</li></ul>";};
 
 
-        
-    DecVec: Tipo '[' ']' Identificador '=' new Tipo '[' e ']' ';' {$$=$1+"$"+$4+"$"+$9;}
+     DecVec: Tipo '[' ']' Identificador '=' new Tipo '[' e ']' ';' {$$=$1+"$"+$4+"$"+$9;}
      | Tipo '[' ']' Identificador '=' '{' Lista_E '}' ';' {$$=$1+"$"+$4+"$"+$7;};
      
     ModifVec: Identificador '[' ENTERO ']' '=' e  ';'{$$=$1+"$"+$3+"$"+$6;} ; 
@@ -380,8 +378,7 @@ Senten: break {}
 
     Modilist : Identificador '[' '[' ENTERO ']' ']' = e ';' {$$=$1+"$"+$4+"$"+$8;} ; 
 
-    Addlist : Identificador '.' '(' e ')' ';' {$$=$1+"$"+$3;} ; 
-
+    Addlist : Identificador '.' '(' e ')' ';' {$$=$1+"$"+$4;} ; 
 
     Sent1: Sent1 IF{$$="<ul><li>"+$1+"<ul><li>Declaracion If<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
     |Sent1 Swit{$$="<ul><li>"+$1+"<ul><li>Declaracion Switch<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
@@ -392,19 +389,19 @@ Senten: break {}
     |Sent1 LFunc{$$="<ul><li>"+$1+"<ul><li>Asignacion Funcion <ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
     |Sent1 Avar{$$="<ul><li>"+$1+"<ul><li>Asignacion Variable<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
     |Sent1 Fo{$$="<ul><li>"+$1+"<ul><li>Declaracion For<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
-    |Sent1 Addlist{$$="<ul><li>"+$1+"<ul><li>Agregar a lista<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
     |Sent1 DecVec{$$="<ul><li>"+$1+"<ul><li>Declaracion Vectore<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
     |Sent1 ModifVec{$$="<ul><li>"+$1+"<ul><li>Modificar vectores<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
     |Sent1 Listas{$$="<ul><li>"+$1+"<ul><li>Declaracion Listas<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
-    |Sent1 Modilist{$$="<ul><li>"+$1+"<ul><li>Modificar Listas<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
-    
+    |Sent1 Modilist{$$="<ul><li>"+$1+"<ul><li>Modificar Listas<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}  
+    |Sent1 Addlist{$$="<ul><li>"+$1+"<ul><li>Agregar a lista<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
+    |Sent1 ejecuciones {$$="<ul><li>"+$1+"<ul><li>metodo ejecutar exec<ul><li>"+$2+"</li></ul></li></ul></li></ul>";}
     |IF{$$="<ul><li>Declaracion If <ul><li>"+$1+"</li></ul></li></ul>";}
     |Swit{$$="<ul><li>Declaracion Switch<ul><li>"+$1+"</li></ul></li></ul>";}
     |Whil{$$="<ul><li>Declaracion While<ul><li>"+$1+"</li></ul></li></ul>";}
     |Do{$$="<ul><li>Declaracion Do<ul><li>"+$1+"</li></ul></li></ul>";}
-    |Var{$$="<ul><li>Declaracion Variable<ul><li>"+$1+"</li></ul></li></ul>";}
-    |Imprimir{$$="<ul><li>Imprimir<ul><li>"+$1+"</li></ul></li></ul>";}
     |LFunc{$$="<ul><li>Asignacion Funcion<ul><li>"+$1+"</li></ul></li></ul>";}
+    |Imprimir{$$="<ul><li>Imprimir<ul><li>"+$1+"</li></ul></li></ul>";}
+    |Var{$$="<ul><li>Declaracion Variable<ul><li>"+$1+"</li></ul></li></ul>";}
     |Avar{$$="<ul><li>Asignacion Variable<ul><li>"+$1+"</li></ul></li></ul>";}
     |Fo{$$ = "<ul><li>Declaracion For<ul><li>"+$1+"</li></ul></li></ul>";}
     |DecVec{$$ = "<ul><li>Declaracion Vector<ul><li>"+$1+"</li></ul></li></ul>";}
@@ -413,8 +410,7 @@ Senten: break {}
     |Modilist{$$ = "<ul><li>Modificar Lista<ul><li>"+$1+"</li></ul></li></ul>";}
     |Addlist{$$ = "<ul><li>Agregar a lista <ul><li>"+$1+"</li></ul></li></ul>";}
     |ejecuciones{$$ = "<ul><li>Exec<ul><li>"+$1+"</li></ul></li></ul>";}
-    |error {CErrores.Errores.add(new CNodoError.NodoError("Sintactico","No se esperaba el token: "+yytext,yylineno));}
-    ;
+   ;
 
  
  

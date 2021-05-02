@@ -32,8 +32,9 @@ function Conn() {
             //   var cadena = "";
             //$("#Muestra1").html(ast);
             var arbolito = data.toString();
+            console.log("llega la data arbolinchi -----------------");
+
             console.log(data.toString());
-            console.log("llega la data -----------------");
             arbol(arbolito);
 
 

@@ -210,8 +210,8 @@ Var2: Var2 ',' Tipo Identificador{$$=$1+"$"+ $2+"$"+ $3+"$"+ $4;}
 
 
 
-Metodo: void Identificador '(' Lista_Parametro ')' '{' Sent113 {$$="<tr> <td>"+"declaracion de metodo void"+"</td><td>"+"metodo"+"</td><td>"+$2+"</td></tr>"+$7;}
-|void main '(' ')' '{' Sent113  {$$="<tr> <td>"+"declaracion de metodo void"+"</td><td>"+"metodo"+"</td><td>"+$2+"</td></tr>"+$7;}
+Metodo: void Identificador '(' Lista_Parametro ')' '{' Sent113 {$$="<tr> <td>"+"identificacion de de metodo void"+"</td><td>"+"metodo"+"</td><td>"+$2+"</td></tr>"+$7;}
+|void main '(' ')' '{' Sent113  {$$="<tr> <td>"+"declaracion de metodo void"+"</td><td>"+"metodo"+"</td><td>"+$2+"</td></tr>"+$6;}
 |void Identificador '(' ')' '{' Sent113 {$$="<tr> <td>"+"declaracion de metodo void"+"</td><td>"+"metodo"+"</td><td>"+$2+"</td></tr>"+$6;};
 
 Sent113: Sent1 return ';' '}'{$$=$1;}
@@ -345,7 +345,7 @@ Senten: break {}
     Whil: while '(' e ')' '{' Sent111 {$$=$6;};
 
     Sent111: Sent1 Senten ';' '}'{$$=$1+" "+$2+"";}
-    |Sent1 '}'{$$=$1}
+    |Sent1 '}'{$$=$1;}
     |Senten ';' '}'{$$="Sentencia "+$1+"";}
     |'}'{};
 

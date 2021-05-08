@@ -96,12 +96,10 @@
 [A-Za-z|"_"]+[A-Za-z|0-9|"_"]*"+""+"     return 'AUMETO';
 [A-Za-z|"_"]+[A-Za-z|0-9|"_"]*"-""-"     return 'DECREMENTO';
 [0-9]+."+""+"       return 'EAUMENTO';
-[0-9]+("."[0-9]+)."+""+"  return 'DAUMENTO';
-[0-9]+."-""-"       return 'EDECREMENTO';
-[0-9]+("."[0-9]+)."-""-"  return 'DDECREMENTO';
 
+    
 [\']([^])[\'] return 'CARACTER';
-\"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
+\"[^\"|\-]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
 [A-Za-z|"_"][A-Za-z|0-9|"_"]*  return 'Identificador';
 .           CErrores.Errores.add(new CNodoError.NodoError("Lexico","No se esperaba el caracter: "+yytext,yylineno))
 <<EOF>>               return 'EOF';
@@ -287,8 +285,6 @@ Senten: break {}
         {$$ = "Resta "+$1+" "+$2+" "+$3+"";}
     |CADENA
         {$$ = "Cadena "+$1+"";}
-    |Identificador '[' e ']' 
-       {$$ = " arreglo "+$1+""+$3+"";}
     |CARACTER
         {$$ = "Caracter "+$1+"";}
     | ENTERO
@@ -319,6 +315,8 @@ Senten: break {}
          {$$ = "Llamada to string "+$1+"";}
     |tochararray '(' e ')'
          {$$ = "Llamada To charArray "+$1+"";}
+    |Identificador '[' e ']' 
+       {$$ = " arreglo "+$1+""+$3+"";}
     |Identificador
         {$$ = "Identificador -"+$1+"";};
         
@@ -372,12 +370,12 @@ Senten: break {}
     DecVec: Tipo '[' ']' Identificador '=' new Tipo '[' e ']' ';' {$$=$1+"$"+$4+"$"+$9;}
      | Tipo '[' ']' Identificador '=' '{' Lista_E '}' ';' {$$=$1+"$"+$4+"$"+$7;};
      
-    ModifVec: Identificador '[' ENTERO ']' '=' e  ';'{$$=$1+"$"+$3+"$"+$6;} ; 
+    ModifVec: Identificador '[' e ']' '=' e  ';'{$$=$1+"$"+$3+"$"+$6;} ; 
     
     Listas: list '<' Tipo '>' Identificador '=' new list  '<' Tipo '>' ';' {$$=$1+"$"+$3+"$"+$5;}
          | list '<' Tipo '>' Identificador '=' tochararray '(' e ')' ';' {$$=$1+"$"+$3+"$"+$5;};
 
-    Modilist : Identificador '[' '[' ENTERO ']' ']' = e ';' {$$=$1+"$"+$4+"$"+$8;} ; 
+    Modilist : Identificador '[' '[' e ']' ']' = e ';' {$$=$1+"$"+$4+"$"+$8;} ; 
 
     Addlist : Identificador '.' '(' e ')' ';' {$$=$1+"$"+$4;} ; 
 

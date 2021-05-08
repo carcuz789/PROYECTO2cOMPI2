@@ -97,16 +97,7 @@ function parser(texto) {
     }
 }
 
-function parser1(texto) {
-    try {
 
-        return gramatica1.parse(texto);
-    }
-    catch (e) {
-        return "Error en compilacion de Entrada2: " + e.toString();
-        // return texto+"Error1";
-    }
-}
 function parser2(texto) {
     try {
 
@@ -114,6 +105,17 @@ function parser2(texto) {
     }
     catch (e) {
         return "Error en compilacion de Entrada3: " + e.toString();
+        // return texto+"Error1";
+    }
+}
+
+function parser1(texto) {
+    try {
+
+        return gramatica1.parse(texto);
+    }
+    catch (e) {
+        return "Error en compilacion de Entrada2: " + e.toString();
         // return texto+"Error1";
     }
 }

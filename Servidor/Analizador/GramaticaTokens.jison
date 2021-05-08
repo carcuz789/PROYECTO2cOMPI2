@@ -11,8 +11,8 @@
     var ini=0;
     var Cuerpo="",cadena1="",probe="";
 
-   // let CErrores=require('../JavaAST/Errores');
-   // let CNodoError=require('../JavaAST/NodoError');
+    // let CErrores=require('../JavaAST/Errores');
+    // let CNodoError=require('../JavaAST/NodoError');
     // let Tokens = require('..');
     function Borrar(){
        return "Hola";
@@ -100,7 +100,6 @@
 [0-9]+."-""-"       return 'EDECREMENTO';
 [0-9]+("."[0-9]+)."-""-"  return 'DDECREMENTO';
 
-
 [\']([^])[\'] return 'CARACTER';
 \"[^\"]*\"				{ yytext = yytext.substr(1,yyleng-2); return 'CADENA'; }
 [A-Za-z|"_"][A-Za-z|0-9|"_"]*  return 'Identificador';
@@ -158,18 +157,18 @@ S10:S10 Scl {$$=$1+"$"+$2;}
 
 Scl:S1{$$=$1;};
 
-S1: Imprimir{$$=$1;}
-|Func{$$=$1;}
-|Metodo{$$=$1;}
-|LFunc{$$=$1;}
-|Var{$$=$1;}
-|Avar{$$=$1;}
-|DecVec{$$=$1;}
-|ModifVec{$$=$1;}
-|Listas{$$=$1;}
-|Modilist{$$=$1;}
-|Addlist{$$=$1;}
-|ejecuciones{$$=$1;}
+S1: Imprimir{$$=$1+"\n";}
+|Func{$$=$1+"\n";}
+|Metodo{$$=$1+"\n";}
+|LFunc{$$=$1+"\n";}
+|Var{$$=$1+"\n";}
+|Avar{$$=$1+"\n";}
+|DecVec{$$=$1+"\n";}
+|ModifVec{$$=$1+"\n";}
+|Listas{$$=$1+"\n";}
+|Modilist{$$=$1+"\n";}
+|Addlist{$$=$1+"\n";}
+|ejecuciones{$$=$1+"\n";}
 ;
 
 
@@ -178,7 +177,7 @@ ejecuciones : exec Identificador '(' ')' ';' {$$=$1+"$"+$2+"$"+$5;}
 
 
 
-Var: Tipo Lista_Id Var1{$$=$1+"$"+$2+"$"+$3;};
+Var: Tipo Lista_Id Var1{$$=$1+"$"+$2+"$"+$3+"\n";};
 
 Tipo: int{$$=$1;}
 |double{$$=$1;}
@@ -189,56 +188,59 @@ Tipo: int{$$=$1;}
 Lista_Id: Lista_Id ',' Identificador{$$=$1+"$"+$2+"$"+$3;}
 |Identificador{$$=$1;};
 
-Var1:'=' e ';'{$$=$3;}
-|';'{$$=$1;};
+
+Var1:'=' e ';'{$$= $2;}
+|';'{};
 
 Avar: Identificador '(' ')' ';'{}
-|Identificador '=' e ';'{};
+|Identificador '=' e ';'{$$=$1+" = "+ $3+"\n"};
 
-Func: Tipo Identificador '(' Lista_Parametro ')' '{' Sent123 {$$=$1+"$"+$2+"$"+$3+"$"+$4+"$"+$5+"$"+$6+"$"+$7;}
-|Tipo Identificador '(' ')' '{' Sent123 {$$=$1+"$"+$2+"$"+$3+"$"+$4+"$"+$5+"$"+$6;};
+Func: Tipo Identificador '(' Lista_Parametro ')' '{' Sent123 {$$= $7+"\n";}
+|Tipo Identificador '(' ')' '{' Sent123 {$$=$6;};
 
-Sent123: Sent1 return e ';' '}'{$$=$1+"$"+$5;}
-|return e ';' '}'{$$=$4;}
-| Sent1 '}'{$$=$1+"$"+$2;}
-|'}'{$$=$1;};
+Sent123: Sent1 return e ';' '}'{$$=$1+"\n";}
+|return e ';' '}'{}
+| Sent1 '}'{$$=$1+"\n";}
+|'}'{};
 
-Lista_Parametro: Var2 {$$=$1;};
+Lista_Parametro: Var2 {$$=$1+"\n";};
 
-Var2: Var2 ',' Tipo Identificador{$$=$1+"$"+ $2+"$"+ $3+"$"+ $4;}
-|Tipo Identificador{$$=$1+"$"+ $2;};
-
-
-Metodo: void Identificador '(' Lista_Parametro ')' '{' Sent113 {$$=$1+"$"+$2+"$"+$3+"$"+$4+"$"+$5+"$"+$6+"$"+$7;}
-|void main '(' ')' '{' Sent113  {$$=$1+"$"+$2+"$"+$3+"$"+$4+"$"+$5+"$"+$6;}
-|void Identificador '(' ')' '{' Sent113 {$$=$1+"$"+$2+"$"+$3+"$"+$4+"$"+$5+"$"+$6;};
-
-Sent113: Sent1 return ';' '}'{$$=$1+"$"+$4;}
-| return ';' '}'{$$=$3;}
-|Sent1 '}' {$$=$1+"$"+$2;}
-|'}'{$$=$1;};
-
-LFunc: Identificador '(' Lista_E ')' ';'{$$=$1+"$"+$2+"$"+$3+"$"+$4;};
-
-Lista_E: Lista_E ',' e{$$=$1+"$"+$2+"$"+$3;}
-|e{$$=$1;};
+Var2: Var2 ',' Tipo Identificador{}
+|Tipo Identificador{};
 
 
-Imprimir: print '(' e ')' ';'{};
+
+Metodo: void Identificador '(' Lista_Parametro ')' '{' Sent113 {$$=$7+"\n";}
+|void main '(' ')' '{' Sent113  {$$=$6+"\n";}
+|void Identificador '(' ')' '{' Sent113 {$$=$6+"\n";};
+
+Sent113: Sent1 return ';' '}'{$$=$1+"\n";}
+| return ';' '}'{}
+|Sent1'}' {$$=$1+"\n";}
+|'}'{};
+
+LFunc: Identificador '(' Lista_E ')' ';' {$$=$1+"$"+$2+"$"+$3+"$"+$4+"\n";};
+
+Lista_E: Lista_E ',' e{}
+|e{};
+
+
+Imprimir: print '(' e ')' ';'{$$=$3};
+
 
 
     
-IF: if '(' e ')' '{' Sent11  {$$=$6;}
-|if '(' e ')' '{' Sent11  else '{' Sent11 {$$=$6+"$"+$9;}
-|if '(' e ')' '{' Sent11  ELS{$$=$6+"$"+$7;}
-|if '(' e ')' '{' Sent11  ELS else '{' Sent11 {$$=$6+"$"+$7+"$"+$10;};
+IF: if '(' e ')' '{' Sent11  {$$=$6+"\n";}
+|if '(' e ')' '{' Sent11  else '{' Sent11 {$$=$6+"\n"+$9;}
+|if '(' e ')' '{' Sent11  ELS{$$=$6+$7+"\n";}
+|if '(' e ')' '{' Sent11  ELS else'{' Sent11 {$$=+$6+$7+$10+"\n";};
 
-ELS: ELS else if '(' e ')' '{' Sent11  {$$=$1+"$"+$8;}
+ELS: ELS else if '(' e ')' '{' Sent11  {$$=$1+"\n"+$8;}
 |else if '(' e ')' '{' Sent11 {$$=$7;};
 
 Sent11: Sent1 '}' {$$=$1;}  
 |Sent1 Senten ';' '}' {$$=$1;}
-|Senten ';' '}' {}
+|Senten';' '}'{}
 |'}'{};
 
 
@@ -248,164 +250,167 @@ Senten: break {}
 |continue {};
   
     e: e '&&' e
-    {$$=$1+"$"+$2+"$"+$3;}
+       {}
     | e '||' e
-        {$$=$1+"$"+$2+"$"+$3;}
+        {}
     |'!' e
-        {$$=$1+"$"+$2;}
+        {}
     | '-' e %prec UMINUS
-        {$$=$1+"$"+$2;}
+       {}
     | '*''-' e %prec UMINUS
         {}
     | '(' e ')'
         {}
-    
     | e '==' e
         {}
     | e '!=' e
-    {}
+       {}
     | e '<=' e
-    {}
-    | e '>=' e
         {}
+    | e '>=' e
+       {}
     | e '<' e
-    {}
+       {}
     | e '>' e
         {}
     | e '^' e
-    {}
+         {$$ = Math.pow($1, $3);}
     | e '/' e
-        {}
+       {$$ = $1 / $3;}
     | e '*' e
-    {}
+         {$$ = $1 * $3;}
     | e '%' e
-        {}
+         {$$ = $1 % $3;}
     | e '+' e
-        {}
+       {$$ = $1 + $3;}
     | e '-' e
-        {}
+              {$$ = $1 - $3;}
     |CADENA
-    {}
+       {$$ = $1;}
     |Identificador '[' e ']' 
-        {}
+       {}
     |CARACTER
-        {}
+        {$$ = $1;}
     | ENTERO
-        {}
+        {$$ = Number(yytext);}
     | DECIMAL
-        {}
+        {$$ = Number(yytext);}
     |true
-        {}
+       {}
     |false
-        {}
+       {}
     |LFunc
         {}
     |Tipo
-        {} 
+         {}
     |tolower '(' e ')'
-        {}
+         {$$ = $3.toLowerCase();}
     |toupper '(' e ')'
-        {}
+         {$$ = $3.toUpperCase();}
     |lenght '(' e ')'
-        {}
+        {  $$ = $3.lenght;}
     |truncate '(' e ')'
-        {}
+        {$$ = Math.trunc($3);}
     |round '(' e ')'
-        {}
+         {$$ = Math.round($3);}
     |typeof '(' e ')'
-        {}
+         {$$ =$3;}
     |tostring '(' e ')'
-        {}
+         {$$ =$3;}
     |tochararray '(' e ')'
-        {}
+         {}
     |Identificador
-        {};
-
-Swit: switch '(' e ')' '{' Cas Def '}' {$$=$6+"$"+$7;};
-
-Cas: Cas case e ':' Sent1 {$$=$1+"$"+$5;}
-|Cas case e ':' {$$=$1;}
-|Cas case e ':' Sent1 break ';'{$$=$1+"$"+$5;}
-|Cas case e ':' break ';'{$$=$1;}
-|case e ':' {}
-|case e ':' Sent1 {$$=$4;}
-|case e ':' break ';'{}
-|case e ':' Sent1 break ';'{$$=$4;};
-
-
-Def: default ':' Sent1 break ';'{$$=$3;}
-|default ':' break ';'{}
-|default ':' Sent1 {$$=$3;}
-|default ':' {};
-
-Whil: while '(' e ')' '{' Sent111 {$$=$6;};
-
-Sent111: Sent1 Senten ';' '}'{$$=$1;}
-|Sent1 '}'{$$=$1;}
-|Senten ';' '}'{}
-|'}'{};
-
-Do: do '{' Sent11  while '(' e ')' ';'{$$=$3;};
-
-Fo: for '(' Fo1 ';' e ';'  Aum ')' '{' Sent112  {$$=$10;};
-
-Sent112: Sent1 Senten ';' '}'{$$=$1;}
-|Senten ';' '}'{}
-|Sent1 '}'{$$=$1;}
-|'}'{};
-
-Fo1: Tipo Identificador '=' e{}
-| Identificador '=' e{};
-
-Aum:AUMETO{}
-|DECREMENTO{};
-
-
+        {$$=$1;};
         
-    DecVec: Tipo '[' ']' Identificador '=' new Tipo '[' e ']' ';' {$$=$1+"$"+$4+"$"+$9;}
-     | Tipo '[' ']' Identificador '=' '{' Lista_E '}' ';' {$$=$1+"$"+$4+"$"+$7;};
+    Swit: switch '(' e ')' '{' Cas Def '}' {$$=$6;};
+
+
+    Cas: Cas case e ':' Sent1 {$$=$5;}
+    |Cas case e ':' {}
+    |Cas case e ':' Sent1 break ';'{$$=$5;}
+    |Cas case e ':' break ';'{}
+    |case e ':' {}
+    |case e ':' Sent1 {$$=$4;}
+    |case e ':' break ';'{}
+    |case e ':' Sent1 break ';'{$$=$4;};
+
+
+
+   Def: default ':' Sent1 break ';'{$$= $3;}
+    |default ':' break ';'{}
+    |default ':' Sent1 {$$= $3;}
+    |default ':' {};
+
+
+    Whil: while '(' e ')' '{' Sent111{$$= $6;};
+
+    Sent111: Sent1 Senten ';' '}'{$$= $1;}
+    |Sent1 '}'{}
+    |Senten ';' '}'{$$= $1;}
+    |'}'{};
+
+    Do: do '{' Sent11  while '(' e ')' ';' {};
+
+  
+    Fo: for '(' Fo1 ';' e ';'  Aum ')' '{' Sent112  {};
+
+
+    Sent112: Sent1 Senten ';' '}' {}
+    |Senten ';' '}'{}
+    |Sent1 '}'{}
+    |'}'{}
+    ;
+
+    Fo1: Tipo Identificador '=' e{}
+    | Identificador '=' e{};
+
+    Aum:AUMETO{}
+    |DECREMENTO{};
+
+
+     DecVec: Tipo '[' ']' Identificador '=' new Tipo '[' e ']' ';' {}  
+     | Tipo '[' ']' Identificador '=' '{' Lista_E '}' ';' {};
      
-    ModifVec: Identificador '[' ENTERO ']' '=' e  ';'{$$=$1+"$"+$3+"$"+$6;} ; 
+    ModifVec: Identificador '[' ENTERO ']' '=' e  ';'{}   ; 
     
-    Listas: list '<' Tipo '>' Identificador '=' new list  '<' Tipo '>' ';' {$$=$1+"$"+$3+"$"+$5;}
-         | list '<' Tipo '>' Identificador '=' tochararray '(' e ')' ';' {$$=$1+"$"+$3+"$"+$5;};
+    Listas: list '<' Tipo '>' Identificador '=' new list  '<' Tipo '>' ';' {}  
+         | list '<' Tipo '>' Identificador '=' tochararray '(' e ')' ';' {} ; 
 
-    Modilist : Identificador '[' '[' ENTERO ']' ']' = e ';' {$$=$1+"$"+$4+"$"+$8;} ; 
+    Modilist : Identificador '[' '[' ENTERO ']' ']' = e ';' {} ; 
 
-    Addlist : Identificador '.' add '(' e ')' ';' {$$=$1+"$"+$3;} ; 
+    Addlist : Identificador '.' '(' e ')' ';' {} ; 
 
-    Sent1: Sent1 IF{$$=$1+"$"+$2;}
-    |Sent1 Swit{$$=$1+"$"+$2;}
-    |Sent1 Whil{$$=$1+"$"+$2;}
-    |Sent1 Do{$$=$1+"$"+$2;}
-    |Sent1 Var{$$=$1+"$"+$2;}
-    |Sent1 Imprimir{$$=$1+"$"+$2;}
-    |Sent1 LFunc{$$=$1+"$"+$2;}
-    |Sent1 Avar{$$=$1+"$"+$2;}
-    |Sent1 Fo{$$=$1+"$"+$2;}
-    |Sent1 DecVec{$$=$1+"$"+$2;}
-    |Sent1 ModifVec{$$=$1+"$"+$2;}
-    |Sent1 Listas {$$=$1+"$"+$2;}
-    |Sent1 Modilist{$$=$1+"$"+$2;}
-    |Sent1 ejecuciones{$$=$1+"$"+$2;}
-    |Sent1 Addlist{$$=$1+"$"+$2;}
+    Sent1: Sent1 IF{$$=$1+"\n"+$2;}
+    |Sent1 Swit{$$=$1+$2;}
+    |Sent1 Whil{$$=$1+$2;}
+    |Sent1 Do{$$=$1+$2;}
+    |Sent1 Var{$$=$1+$2;}
+    |Sent1 Imprimir{$$=$1+$2;}
+    |Sent1 LFunc{$$=$1+$2;}
+    |Sent1 Avar{$$=$1+$2;}
+    |Sent1 Fo{$$=$1+$2;}
+    |Sent1 DecVec{$$=$1+$2;}
+    |Sent1 ModifVec{$$=$1+$2;}
+    |Sent1 Listas{$$=$1+$2;}
+    |Sent1 Modilist{$$=$1+$2;}
+    |Sent1 Addlist{$$=$1+$2;}
+    |Sent1 ejecuciones {$$=$1+$2;}
     |IF{$$=$1;}
     |Swit{$$=$1;}
     |Whil{$$=$1;}
     |Do{$$=$1;}
-    |Var{$$=$1;}
-    |Imprimir{$$=$1;}
     |LFunc{$$=$1;}
+    |Imprimir{$$=$1;}
+    |Var{$$=$1;}
     |Avar{$$=$1;}
-    |DecVec{$$=$1;}
-    |ModifVec{$$=$1;}
-    |Listas{$$=$1;}
-    |Modilist{$$=$1;}
-    |Addlist{$$=$1;}
-    |ejecuciones{$$=$1;}
-    |Fo{$$=$1;};
-
-
+    |Fo{$$ = $1;}
+    |DecVec{$$ = $1;}
+    |ModifVec{$$ = $1;}
+    |Listas{$$ = $1;}
+    |Modilist{$$ = $1;}
+    |Addlist{$$ = $1;}
+    |ejecuciones{$$ = $1;}
+   ;
 
  
  
